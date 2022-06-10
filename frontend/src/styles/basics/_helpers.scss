@@ -1,0 +1,31 @@
+// Flex
+.flex {
+  display: flex;
+}
+
+.fixed {
+  position: fixed;
+}
+
+.inline-flex {
+  display: inline-flex;
+}
+
+// List
+.clean-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+// Text
+.vertical-text {
+  writing-mode: tb-rl;
+  transform: rotate(-180deg);
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

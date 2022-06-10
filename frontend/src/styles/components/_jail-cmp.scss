@@ -1,0 +1,88 @@
+.jail-cmp {
+  position: relative;
+
+  .just {
+    position: relative;
+    top: 15px;
+    left: 25px;
+  }
+  .visiting {
+    position: relative;
+    transform: rotate(90deg);
+    top: 72px;
+    left: 30px;
+  }
+  .in-jail {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    background-color: orange;
+    width: 70%;
+    height: 70%;
+    border-top: 1px solid;
+    border-right: 1px solid;
+    bottom: 0;
+    left: 0;
+
+    .person {
+      position: absolute;
+      transform: rotate(45deg);
+      font-size: 30px;
+    }
+
+    .jail {
+      position: absolute;
+      transform: rotate(45deg);
+      bottom: 8px;
+      left: 8px;
+    }
+    .in {
+      position: absolute;
+      margin-bottom: 40px;
+      margin-left: 40px;
+      transform: rotate(45deg);
+    }
+
+    .cage {
+      background-color: white;
+      transform: rotate(45deg);
+      width: 60%;
+      height: 60%;
+      border: 1px solid;
+      position: relative;
+
+      .line {
+        position: absolute;
+        left: 10px;
+        width: 1px;
+        height: 100%;
+        background-color: rgb(0, 0, 0);
+      }
+
+      .line-2 {
+        position: absolute;
+        left: 20px;
+        width: 1px;
+        height: 100%;
+        background-color: rgb(0, 0, 0);
+      }
+
+      .line-3 {
+        position: absolute;
+        left: 30px;
+        width: 1px;
+        height: 100%;
+        background-color: rgb(0, 0, 0);
+      }
+    }
+  }
+
+  .players {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}

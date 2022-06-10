@@ -1,0 +1,19 @@
+.community-cmp {
+  position: relative;
+  p {
+    text-align: center;
+  }
+
+  .fa-cube {
+    margin-top: 25px;
+    font-size: 30px;
+    color: #7c9cab;
+  }
+  .players {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}

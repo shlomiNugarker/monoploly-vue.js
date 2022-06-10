@@ -1,0 +1,31 @@
+[
+  {
+    "_id": "b101",
+    "title": "game1",
+    "players": [
+      {
+        "name": "Itamar Ben Gvir",
+        "currPos": 0,
+        "coins": 2000
+      },
+      {
+        "name": "Bibi Netaniahu",
+        "currPos": 0,
+        "coins": 2000
+      },
+      {
+        "name": "Barak Obame",
+        "currPos": 0,
+        "coins": 2000
+      }
+    ],
+    "currDice": [2, 6],
+    "tiles": [
+      {
+        "players": null,
+        "owner": null,
+        "color": "blue"
+      }
+    ]
+  }
+]

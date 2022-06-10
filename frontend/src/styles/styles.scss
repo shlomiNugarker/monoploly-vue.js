@@ -1,0 +1,23 @@
+// // BASICS
+@import 'basics/helpers';
+@import 'basics/base';
+
+// // COMPONENTS
+
+@import './components/start-cmp';
+
+@import './components/chancee-cmp';
+@import './components/community-cmp';
+@import './components/electric-cmp';
+@import './components/income-cmp';
+@import './components/jail-cmp';
+@import './components/luxury-tax-cmp';
+@import './components/parking-cmp';
+@import './components/railroad-cmp';
+@import './components/send-to-jail-cmp';
+@import './components/tile-cmp';
+@import './components/water-work-cmp';
+
+// // VIEWS
+@import './views/board-view';
+@import './views/login-view';

@@ -1,0 +1,31 @@
+.send-to-jail-cmp {
+  position: relative;
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  .containerr {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    transform: rotate(45deg);
+    // background-color: lawngreen;
+    width: 80%;
+    height: 90%;
+
+    .drawing {
+      font-size: 40px;
+      color: #640303;
+    }
+  }
+
+  .players {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}

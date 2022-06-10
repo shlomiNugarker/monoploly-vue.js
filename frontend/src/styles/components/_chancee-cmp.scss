@@ -1,0 +1,16 @@
+.chance-cmp {
+  position: relative;
+  text-align: center;
+  .drawing {
+    margin-top: 20px;
+    font-size: 50px;
+    color: #f50c2b;
+  }
+  .players {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
