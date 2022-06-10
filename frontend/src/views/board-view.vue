@@ -16,7 +16,8 @@
       <div class="chance" @click="takeCard">Chance</div>
       <div class="communiyt">Community chest</div>
       <div class="logo">Monopoly</div>
-      <div class="dice" @click="throwDice">{{ currDice }}</div>
+      <!-- <div class="dice" @click="throwDice">{{ currDice }}</div> -->
+      <diceCmp :currDice="currDice" @throwDice="throwDice" />
     </div>
   </section>
 </template>
@@ -34,12 +35,14 @@ import parkingCmp from '../cmps/parking-cmp.vue'
 import waterWorkCmp from '../cmps/water-work-cmp.vue'
 import sendToJailCmp from '../cmps/send-to-jail-cmp.vue'
 import luxuryTaxCmp from '../cmps/luxury-tax-cmp.vue'
+import diceCmp from '../cmps/dice-cmp.vue'
 import { utilService } from '../services/util.service'
 export default {
   name: 'board-view',
   data() {
     return {
       turn: null,
+      // currDice: [0, 0],
       currDice: null,
       cmpsOrder: [
         'startCmp', // 0
@@ -100,7 +103,6 @@ export default {
           name: 'Go',
           players: [],
           owner: null,
-          // color: 'blue',
           price: 60,
         },
         {
@@ -429,6 +431,7 @@ export default {
     waterWorkCmp,
     sendToJailCmp,
     luxuryTaxCmp,
+    diceCmp,
   },
 }
 </script>

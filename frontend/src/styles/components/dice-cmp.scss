@@ -1,0 +1,16 @@
+.dice-cmp {
+  grid-column: 8/10;
+  grid-row: 3/4;
+
+  .dice-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 100%;
+
+    .dice {
+      font-size: 45px;
+    }
+  }
+}
