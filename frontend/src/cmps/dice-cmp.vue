@@ -1,6 +1,7 @@
 <template>
   <section class="dice-cmp" @click="throwDice">
     <div class="dice-container" v-if="currDice">
+      git
       <font-awesome-icon class="dice" :icon="'dice-' + firstDiceStr" />
       <font-awesome-icon class="dice" :icon="'dice-' + secondDiceStr" />
     </div>
