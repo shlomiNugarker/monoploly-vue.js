@@ -1,7 +1,7 @@
 <template>
   <section class="railroad-cmp">
     <div class="tz">
-      <p>Reading railroad</p>
+      <p>{{ tile.name }}</p>
       <i class="drawing fa fa-subway"></i>
     </div>
     <div class="price">{{ tile.price }}$</div>

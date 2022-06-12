@@ -1,5 +1,6 @@
 .jail-cmp {
   position: relative;
+  border-top-right-radius: 5px;
 
   .just {
     position: relative;
@@ -17,7 +18,7 @@
     justify-content: center;
     align-items: center;
     position: absolute;
-    background-color: orange;
+    background-color: #e29258;
     width: 70%;
     height: 70%;
     border-top: 1px solid;

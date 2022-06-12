@@ -1,0 +1,34 @@
+.waterwork-card {
+  background-color: #cf8e61;
+  padding: 15px;
+  border-radius: 3px;
+  width: 206px;
+  .containerr {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid;
+    padding: 10px;
+    .container-logo {
+      .logo {
+        font-size: 30px;
+        margin-top: 10px;
+        margin-bottom: 5px;
+      }
+    }
+
+    .title {
+      margin: 5px 0px;
+    }
+
+    .description {
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .mortgage {
+      margin-top: 10px;
+      display: flex;
+    }
+  }
+}

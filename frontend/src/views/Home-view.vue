@@ -1,6 +1,6 @@
 <template>
   <section class="home-view">
-    <h1>home-view</h1>
+    <div class="card">caffrd</div>
   </section>
 </template>
 
@@ -19,7 +19,7 @@ export default {
 
 <style>
 .home-view {
-  background-color: rgb(145, 152, 142);
+  /* background-color: rgb(145, 152, 142); */
   height: 100vh;
   width: 100vw;
   display: flex;

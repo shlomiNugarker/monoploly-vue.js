@@ -2,8 +2,12 @@
   <section class="start-cmp">
     <div class="conainer">
       <div class="title">
-        {{ tile.name }}
+        <p>
+          {{ tile.name }}
+        </p>
       </div>
+      <!-- <font-awesome-icon icon="right-long" /> -->
+
       <div v-if="tile.players" class="players">
         <div class="player" v-for="player in tile.players" :key="player">
           🙄

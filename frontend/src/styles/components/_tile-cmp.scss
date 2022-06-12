@@ -6,7 +6,9 @@
     flex-direction: column;
     justify-content: space-between;
     position: relative;
+    text-align: center;
     .color-bar {
+      width: 100%;
       height: 20px;
       text-align: center;
       display: flex;

@@ -1,0 +1,57 @@
+.property-card {
+  .card {
+    background-color: rgb(246, 244, 244);
+    min-height: 200px;
+    border: 1px solid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1px;
+    border-radius: 5px;
+    .header {
+      border-radius: 5px;
+      padding: 3px;
+      width: 100%;
+      height: 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 3px;
+    }
+
+    .rent {
+      margin-bottom: 10px;
+    }
+
+    .prices {
+      width: 90%;
+      .container-price {
+        height: 35px;
+        justify-content: space-between;
+        display: flex;
+        .house {
+        }
+
+        .price {
+        }
+      }
+    }
+
+    .hotel {
+      margin-bottom: 20px;
+    }
+    .mortgage,
+    .house-cost,
+    .hotel-cost {
+      margin-bottom: 7px;
+    }
+
+    .description {
+      padding: 5px;
+      font-size: 10px;
+      text-align: center;
+      line-height: 20px;
+    }
+  }
+}

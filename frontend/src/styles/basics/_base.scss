@@ -4,6 +4,8 @@
 
 html {
   font-size: 16px;
+  // font-family: roboto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
@@ -26,7 +28,7 @@ p {
   margin: 0;
 }
 
-a:hover {
+a {
   text-decoration: none;
 }
 

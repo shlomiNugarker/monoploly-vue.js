@@ -1,10 +1,10 @@
 <template>
   <section class="dice-cmp" @click="throwDice">
     <div class="dice-container" v-if="currDice">
-      git
       <font-awesome-icon class="dice" :icon="'dice-' + firstDiceStr" />
       <font-awesome-icon class="dice" :icon="'dice-' + secondDiceStr" />
     </div>
+    <p v-else class="dice-container">Throw dice</p>
   </section>
 </template>
 
@@ -20,8 +20,6 @@ export default {
   created() {},
   methods: {
     throwDice() {
-      console.log(this.currDice)
-      console.log('d')
       this.$emit('throwDice')
     },
   },
