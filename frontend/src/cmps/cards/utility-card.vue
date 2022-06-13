@@ -1,10 +1,22 @@
 <template>
-  <section class="waterwork-card">
+  <section
+    class="utilitie-card"
+    :style="{ 'background-color': card.background }"
+  >
     <div class="containerr">
       <div class="container-logo">
-        <font-awesome-icon class="logo" icon="faucet-drip" />
+        <font-awesome-icon
+          v-if="card.title === 'Waterworks'"
+          class="logo"
+          icon="faucet-drip"
+        />
+        <font-awesome-icon
+          v-if="card.title === 'Electric Company'"
+          class="logo"
+          icon="bolt-lightning"
+        />
       </div>
-      <h1 class="title">WATER WORKS</h1>
+      <h1 class="title">{{ card.title }}</h1>
       <div class="description">
         <p>
           If one "Utility" is owned <br />
@@ -19,7 +31,7 @@
       </div>
       <div class="mortgage">
         <p>Mortgage Value</p>
-        <p class="price">75$</p>
+        <p class="price">{{ card.price }}$</p>
       </div>
     </div>
   </section>

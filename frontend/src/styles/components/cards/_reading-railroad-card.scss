@@ -1,0 +1,53 @@
+.reading-railroad-card {
+  min-width: 275px;
+  min-height: 270px;
+  background-color: #f6f4f4;
+  padding: 15px;
+  border-radius: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 3px;
+
+  .containerr {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid;
+    padding: 10px;
+    .container-logo {
+      text-align: center;
+      .logo {
+        font-size: 30px;
+        margin: 15px 0;
+      }
+    }
+
+    .title {
+    }
+
+    .rent {
+      width: 90%;
+      margin: 10px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .if {
+      margin: 5px 0;
+      width: 90%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .mortgage {
+      margin-top: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+}

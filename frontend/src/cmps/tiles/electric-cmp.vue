@@ -2,7 +2,7 @@
   <section class="electric-cmp">
     <div>
       <p>Electric company</p>
-      <i class="person fa fa-frown-o"></i>
+      <font-awesome-icon class="electric-logo" icon="bolt-lightning" />
     </div>
     <p>{{ tile.price }}$</p>
 

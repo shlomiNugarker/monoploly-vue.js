@@ -1,7 +1,11 @@
 .property-card {
+  padding: 15px;
+  background-color: rgb(246, 244, 244);
+  margin: 3px;
+  border-radius: 5px;
   .card {
-    background-color: rgb(246, 244, 244);
     min-height: 200px;
+    width: 275px;
     border: 1px solid;
     display: flex;
     flex-direction: column;

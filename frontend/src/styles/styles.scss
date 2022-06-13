@@ -18,14 +18,16 @@
 @import './components/tile-cmp';
 @import './components/water-work-cmp';
 @import './components/dice-cmp';
+
+// CARDS
 @import './components/cards/property-card';
-@import './components/cards/waterwork-card';
-@import './components/cards/_electric-company-card';
+@import './components/cards/utilitie-card';
+@import './components/cards/_reading-railroad-card';
 
 // // VIEWS
 @import './views/board-view';
 @import './views/home-view';
 
-// typography
+// TYPOGRAPHY
 @import './setup/typography.scss';
 @import './setup/vars.scss';
