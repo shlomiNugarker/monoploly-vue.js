@@ -20,6 +20,18 @@
             :key="card._id"
             :card="card"
           />
+
+          <communityChestCard
+            v-for="card in communityChestCards"
+            :key="card._id"
+            :card="card"
+          />
+
+          <chanceCards
+            v-for="card in chanceCards"
+            :key="card._id"
+            :card="card"
+          />
         </div>
       </div>
     </div>
@@ -30,6 +42,8 @@
 import propertyCard from '../cmps/cards/property-card.vue'
 import utilityCard from '../cmps/cards/utility-card.vue'
 import readingRailroadCard from '../cmps/cards/reading-railroad-card.vue'
+import communityChestCard from '../cmps/cards/community-chest-card.vue'
+import chanceCards from '../cmps/cards/chance-card.vue'
 export default {
   name: 'about-view',
   data() {
@@ -62,7 +76,6 @@ export default {
       ],
       houses: 32,
       hotels: 12,
-      chances: 16,
       propertyCards: [
         // Property Tiles
         {
@@ -422,6 +435,7 @@ export default {
           hotelCostNotCalc: 200,
         },
       ],
+      ///////
       utilitiesCards: [
         {
           _id: 'c-107',
@@ -442,6 +456,7 @@ export default {
           background: '#f6f4f4',
         },
       ],
+      /////////
       railroadsCards: [
         {
           _id: 'c-102',
@@ -488,8 +503,212 @@ export default {
           mortgage: 100,
         },
       ],
-      communityChestCards: [],
-      chanceCards: [],
+      ////////////
+      communityChestCards: [
+        {
+          _id: 'cc-101',
+          title: 'Community Chest',
+          description: 'Advance to "Go". (Collect $200) ',
+          background: '#ffeb43',
+        },
+        {
+          _id: 'cc-102',
+          title: 'Community Chest',
+          description: 'Life insurance matures - Collect $100',
+          background: '#ffeb43',
+        },
+        {
+          _id: 'cc-103',
+          title: 'Community Chest',
+          description: 'Get Out of Jail Free. ',
+          background: '#ffeb43',
+        },
+        {
+          _id: 'cc-104',
+          title: 'Community Chest',
+          description:
+            'You have won second prize in a beauty contest. Collect $10.',
+          background: '#ffeb43',
+        },
+        {
+          _id: 'cc-105',
+          title: 'Community Chest',
+          description: 'Bank error in your favor. Collect $200. ',
+          background: '#ffeb43',
+        },
+        {
+          _id: 'cc-106',
+          title: 'Community Chest',
+          description: 'From sale of stock you get $50.',
+          background: '#ffeb43',
+        },
+        {
+          _id: 'cc-107',
+          title: 'Community Chest',
+          description: 'Income tax refund. Collect $20. ',
+          background: '#ffeb43',
+        },
+        {
+          _id: 'cc-108',
+          title: 'Community Chest',
+          description: 'Receive for services $25.',
+          background: '#ffeb43',
+        },
+        {
+          _id: 'cc-109',
+          title: 'Community Chest',
+          description: 'You inherit $100.',
+          background: '#ffeb43',
+        },
+        {
+          _id: 'cc-110',
+          title: 'Community Chest',
+          description: 'Holiday Fund matures. Collect $100. ',
+          background: '#ffeb43',
+        },
+        {
+          _id: 'cc-111',
+          title: 'Community Chest',
+          description:
+            'Collect $50 from every player for opening night seats. ',
+          background: '#ffeb43',
+        },
+        {
+          _id: 'cc-112',
+          title: 'Community Chest',
+          description: "Doctor's fees. Pay $50.",
+          background: '#ffeb43',
+        },
+        {
+          _id: 'cc-113',
+          title: 'Community Chest',
+          description: 'Pay hospital $100.',
+          background: '#ffeb43',
+        },
+        {
+          _id: 'cc-114',
+          title: 'Community Chest',
+          description: 'Pay school tax of $150',
+          background: '#ffeb43',
+        },
+        {
+          _id: 'cc-115',
+          title: 'Community Chest',
+          description:
+            'You are assessed for street repairs: Pay $40 per house and $115 per hotel you own. ',
+          background: '#ffeb43',
+        },
+        {
+          _id: 'cc-116',
+          title: 'Community Chest',
+          description: 'Go to Jail. ',
+          background: '#ffeb43',
+        },
+      ],
+      ////////////////////
+      chanceCards: [
+        {
+          _id: 'cc-201',
+          title: 'Chance',
+          description: 'Advance to "Go". (Collect $200) ',
+          background: '#ff5c00',
+        },
+        {
+          _id: 'cc-202',
+          title: 'Chance',
+          description: 'Advance token to Boardwalk.',
+          background: '#ff5c00',
+        },
+        {
+          _id: 'cc-203',
+          title: 'Chance',
+          description: 'Advance to Illinois Ave.',
+          background: '#ff5c00',
+        },
+        {
+          _id: 'cc-204',
+          title: 'Chance',
+          description: 'Advance to St. Charles Place.',
+          background: '#ff5c00',
+        },
+        {
+          _id: 'cc-205',
+          title: 'Chance',
+          description: 'If you pass Go, collect $200.',
+          background: '#ff5c00',
+        },
+        {
+          _id: 'cc-206',
+          title: 'Chance',
+          description:
+            'Advance token to the nearest Utility. If unowned, you may buy it from the Bank. If owned, throw dice and pay owner a total 10 times the amount thrown.',
+          background: '#ff5c00',
+        },
+        {
+          _id: 'cc-207',
+          title: 'Chance',
+          description:
+            'Advance token to the nearest Utility. If unowned, you may buy it from the Bank. If owned, throw dice and pay owner a total 10 times the amount thrown.',
+          background: '#ff5c00',
+        },
+        {
+          _id: 'cc-208',
+          title: 'Chance',
+          description: 'Go Back 3 Spaces.',
+          background: '#ff5c00',
+        },
+        {
+          _id: 'cc-209',
+          title: 'Chance',
+          description: 'Bank pays you dividend of $50. ',
+          background: '#ff5c00',
+        },
+        {
+          _id: 'cc-210',
+          title: 'Chance',
+          description: 'Your building and loan matures. Collect $150. ',
+          background: '#ff5c00',
+        },
+        {
+          _id: 'cc-211',
+          title: 'Chance',
+          description: 'Pay poor tax of $15',
+          background: '#ff5c00',
+        },
+        {
+          _id: 'cc-212',
+          title: 'Chance',
+          description:
+            'You have been elected Chairman of the Board. Pay each player $50.',
+          background: '#ff5c00',
+        },
+        {
+          _id: 'cc-213',
+          title: 'Chance',
+          description:
+            'Make general repairs on all your property: For each house pay $25, For each hotel {pay} $100.',
+          background: '#ff5c00',
+        },
+        {
+          _id: 'cc-214',
+          title: 'Chance',
+          description: ' Go directly to Jail.',
+          background: '#ff5c00',
+        },
+        {
+          _id: 'cc-215',
+          title: 'Chance',
+          description:
+            'Get out of Jail Free. This card may be kept until needed, or traded/sold.',
+          background: '#ff5c00',
+        },
+        {
+          _id: 'cc-216',
+          title: 'Chance',
+          description: 'You have won a crossword competition. Collect $100.',
+          background: '#ff5c00',
+        },
+      ],
     }
   },
   computed: {},
@@ -499,6 +718,8 @@ export default {
     propertyCard,
     utilityCard,
     readingRailroadCard,
+    communityChestCard,
+    chanceCards,
   },
 }
 </script>

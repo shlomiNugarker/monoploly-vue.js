@@ -22,7 +22,9 @@
 // CARDS
 @import './components/cards/property-card';
 @import './components/cards/utilitie-card';
-@import './components/cards/_reading-railroad-card';
+@import './components/cards/reading-railroad-card';
+@import './components/cards/community-chest-card';
+@import './components/cards/chance-card';
 
 // // VIEWS
 @import './views/board-view';

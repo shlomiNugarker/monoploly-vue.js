@@ -11,32 +11,21 @@
       <div class="center">
         <div>Turn: {{ turn.name }}</div>
       </div>
-      <div class="chance" @click="takeCard">Chance</div>
-      <div class="communiyt">Community chest</div>
+      <div class="chance" @click="takeCard">
+        <div class="cards-chance">
+          <p>Chance</p>
+        </div>
+      </div>
+      <div class="communiyt">
+        <div class="cards-community">
+          <p>Community chest</p>
+        </div>
+      </div>
       <div class="logo">
         <img src="../styles/icon/Monopoly-Logo.svg" alt="" />
       </div>
       <diceCmp :currDice="currDice" @throwDice="throwDice" />
     </div>
-    <!-- <div class="cards">
-      <propertyCard
-        v-for="card in propertyCards"
-        :key="card._id"
-        :card="card"
-      />
-
-      <utilityCard
-        v-for="card in utilitiesCards"
-        :key="card._id"
-        :card="card"
-      />
-
-      <readingRailroadCard
-        v-for="card in railroadsCards"
-        :key="card._id"
-        :card="card"
-      />
-    </div> -->
   </section>
 </template>
 

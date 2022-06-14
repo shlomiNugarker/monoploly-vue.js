@@ -325,6 +325,16 @@
       width: 140px;
       text-transform: uppercase;
       font-size: 14px;
+
+      .cards-chance {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #ff5c00;
+        width: 95%;
+        height: 95%;
+        border-radius: 3px;
+      }
     }
     .logo {
       // background-color: rgb(12, 11, 7);
@@ -354,6 +364,16 @@
       width: 140px;
       text-transform: uppercase;
       font-size: 14px;
+
+      .cards-community {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #ffeb43;
+        width: 95%;
+        height: 95%;
+        border-radius: 3px;
+      }
     }
   }
 }
