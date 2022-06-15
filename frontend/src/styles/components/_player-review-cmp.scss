@@ -1,0 +1,14 @@
+.player-review-cmp {
+  background-color: lightcoral;
+  cursor: pointer;
+  margin: 10px;
+  border-radius: 3px;
+  padding: 3px;
+
+  .containerr {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 15px;
+  }
+}

@@ -724,4 +724,14 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.cards {
+  width: 90%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+</style>

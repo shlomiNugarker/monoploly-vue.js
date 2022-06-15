@@ -4,20 +4,22 @@
 
 // // COMPONENTS
 
-@import './components/start-cmp';
-
-@import './components/chancee-cmp';
-@import './components/community-cmp';
-@import './components/electric-cmp';
-@import './components/income-cmp';
-@import './components/jail-cmp';
-@import './components/luxury-tax-cmp';
-@import './components/parking-cmp';
-@import './components/railroad-cmp';
-@import './components/send-to-jail-cmp';
-@import './components/tile-cmp';
-@import './components/water-work-cmp';
-@import './components/dice-cmp';
+@import './components/player-review-cmp';
+@import './components/players-list-cmp';
+// TILES
+@import './components/tiles/water-work-cmp';
+@import './components/tiles/community-cmp';
+@import './components/tiles/tile-cmp';
+@import './components/tiles/start-cmp';
+@import './components/tiles/send-to-jail-cmp';
+@import './components/tiles/railroad-cmp';
+@import './components/tiles/parking-cmp';
+@import './components/tiles/luxury-tax-cmp';
+@import './components/tiles/chancee-cmp';
+@import './components/tiles/electric-cmp';
+@import './components/tiles/income-cmp';
+@import './components/tiles/jail-cmp';
+@import './components/tiles/dice-cmp';
 
 // CARDS
 @import './components/cards/property-card';
@@ -29,6 +31,7 @@
 // // VIEWS
 @import './views/board-view';
 @import './views/home-view';
+@import './views/player-view';
 
 // TYPOGRAPHY
 @import './setup/typography.scss';

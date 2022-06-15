@@ -1,10 +1,15 @@
 <template>
   <section class="chance-cmp">
     <p>chance</p>
-
     <i class="drawing fa fa-question"></i>
-    <div v-if="tile.players" class="players">
-      <div class="player" v-for="player in tile.players" :key="player">🙄</div>
+    <div v-if="tile.players.length" class="players">
+      <div class="player" v-for="player in tile.players" :key="player">
+        <font-awesome-icon
+          :style="{ color: player.colorToken }"
+          class="token-player"
+          icon="chess-pawn"
+        />
+      </div>
     </div>
   </section>
 </template>
@@ -20,6 +25,7 @@ export default {
   },
   created() {},
   methods: {},
+  components: {},
 }
 </script>
 

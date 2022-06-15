@@ -1,0 +1,23 @@
+.players-list-cmp {
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  right: 0;
+  background-color: lightgoldenrodyellow;
+  padding: 5px;
+  border-radius: 5px;
+  min-height: 200px;
+  width: 215px;
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  transition: right 0.3s;
+
+  &.list-close {
+    // transition: right 0.3s;
+    // right: -215px;
+    // visibility: hidden;
+  }
+}

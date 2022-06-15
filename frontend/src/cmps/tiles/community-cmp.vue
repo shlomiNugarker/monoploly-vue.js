@@ -4,7 +4,13 @@
 
     <i class="drawing fa fa-cube"></i>
     <div v-if="tile.players" class="players">
-      <div class="player" v-for="player in tile.players" :key="player">🙄</div>
+      <div class="player" v-for="player in tile.players" :key="player">
+        <font-awesome-icon
+          :style="{ color: player.colorToken }"
+          class="token-player"
+          icon="chess-pawn"
+        />
+      </div>
     </div>
   </section>
 </template>

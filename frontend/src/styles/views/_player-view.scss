@@ -1,0 +1,10 @@
+.player-view {
+  width: 265px;
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translate(0, -50%);
+
+  height: 70%;
+  background-color: rgb(181, 139, 139);
+}

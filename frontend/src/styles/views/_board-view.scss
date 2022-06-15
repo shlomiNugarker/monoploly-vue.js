@@ -1,10 +1,13 @@
 .board-view {
-  background-color: rgba(104, 56, 20, 0.673);
+  // background-color: rgba(104, 56, 20, 0.673);
+  background-image: url(https://images.unsplash.com/32/Mc8kW4x9Q3aRR3RkP5Im_IMG_4417.jpg?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80);
+
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 10px;
   .container {
     min-width: 500px;
     min-height: 500px;
@@ -13,8 +16,8 @@
     border: 5px solid;
     border-radius: 7px;
 
-    grid-template-columns: 100px repeat(9, 60px) 100px;
-    grid-template-rows: 100px repeat(9, 60px) 100px;
+    grid-template-columns: 100px repeat(9, 50px) 100px;
+    grid-template-rows: 100px repeat(9, 50px) 100px;
 
     .tile {
       display: flex;
@@ -37,11 +40,11 @@
       grid-row: 2;
 
       transform: rotate(-90deg);
-      width: 60px;
+      width: 50px;
       height: 100px;
       position: relative;
-      left: 20px;
-      bottom: 20px;
+      left: 25px;
+      bottom: 25px;
     }
     .tile-12 {
       // background-color: beige;
@@ -49,11 +52,11 @@
       grid-row: 3;
 
       transform: rotate(-90deg);
-      width: 60px;
+      width: 50px;
       height: 100px;
       position: relative;
-      left: 20px;
-      bottom: 20px;
+      left: 25px;
+      bottom: 25px;
     }
     .tile-13 {
       // background-color: beige;
@@ -61,11 +64,11 @@
       grid-row: 4;
 
       transform: rotate(-90deg);
-      width: 60px;
+      width: 50px;
       height: 100px;
       position: relative;
-      left: 20px;
-      bottom: 20px;
+      left: 25px;
+      bottom: 25px;
     }
     .tile-14 {
       // background-color: beige;
@@ -73,11 +76,11 @@
       grid-row: 5;
 
       transform: rotate(-90deg);
-      width: 60px;
+      width: 50px;
       height: 100px;
       position: relative;
-      left: 20px;
-      bottom: 20px;
+      left: 25px;
+      bottom: 25px;
     }
     .tile-15 {
       // background-color: beige;
@@ -85,11 +88,11 @@
       grid-row: 6;
 
       transform: rotate(-90deg);
-      width: 60px;
+      width: 50px;
       height: 100px;
       position: relative;
-      left: 20px;
-      bottom: 20px;
+      left: 25px;
+      bottom: 25px;
     }
     .tile-16 {
       // background-color: beige;
@@ -97,11 +100,11 @@
       grid-row: 7;
 
       transform: rotate(-90deg);
-      width: 60px;
+      width: 50px;
       height: 100px;
       position: relative;
-      left: 20px;
-      bottom: 20px;
+      left: 25px;
+      bottom: 25px;
     }
     .tile-17 {
       // background-color: beige;
@@ -109,11 +112,11 @@
       grid-row: 8;
 
       transform: rotate(-90deg);
-      width: 60px;
+      width: 50px;
       height: 100px;
       position: relative;
-      left: 20px;
-      bottom: 20px;
+      left: 25px;
+      bottom: 25px;
     }
     .tile-18 {
       // background-color: beige;
@@ -121,11 +124,11 @@
       grid-row: 9;
 
       transform: rotate(-90deg);
-      width: 60px;
+      width: 50px;
       height: 100px;
       position: relative;
-      left: 20px;
-      bottom: 20px;
+      left: 25px;
+      bottom: 25px;
     }
     .tile-19 {
       // background-color: beige;
@@ -133,11 +136,11 @@
       grid-row: 10;
 
       transform: rotate(-90deg);
-      width: 60px;
+      width: 50px;
       height: 100px;
       position: relative;
-      left: 20px;
-      bottom: 20px;
+      left: 25px;
+      bottom: 25px;
     }
     .tile-20 {
       // background-color: beige;
@@ -204,11 +207,12 @@
       grid-row: 10;
 
       transform: rotate(90deg);
-      width: 60px;
+      width: 50px;
       height: 100px;
       position: relative;
-      left: 20px;
-      bottom: 20px;
+      left: 25px;
+      bottom: 25px;
+      // border-left: 1px solid;
     }
     .tile-32 {
       // background-color: beige;
@@ -216,11 +220,12 @@
       grid-row: 9;
 
       transform: rotate(90deg);
-      width: 60px;
+      width: 50px;
       height: 100px;
       position: relative;
-      left: 20px;
-      bottom: 20px;
+      left: 25px;
+      bottom: 25px;
+      // border-left: 1px solid;
     }
     .tile-33 {
       // background-color: beige;
@@ -228,11 +233,12 @@
       grid-row: 8;
 
       transform: rotate(90deg);
-      width: 60px;
+      width: 50px;
       height: 100px;
       position: relative;
-      left: 20px;
-      bottom: 20px;
+      left: 25px;
+      bottom: 25px;
+      // border-left: 1px solid;
     }
     .tile-34 {
       // background-color: beige;
@@ -240,11 +246,11 @@
       grid-row: 7;
 
       transform: rotate(90deg);
-      width: 60px;
+      width: 50px;
       height: 100px;
       position: relative;
-      left: 20px;
-      bottom: 20px;
+      left: 25px;
+      bottom: 25px;
     }
     .tile-35 {
       // background-color: beige;
@@ -252,11 +258,11 @@
       grid-row: 6;
 
       transform: rotate(90deg);
-      width: 60px;
+      width: 50px;
       height: 100px;
       position: relative;
-      left: 20px;
-      bottom: 20px;
+      left: 25px;
+      bottom: 25px;
     }
     .tile-36 {
       // background-color: beige;
@@ -264,11 +270,11 @@
       grid-row: 5;
 
       transform: rotate(90deg);
-      width: 60px;
+      width: 50px;
       height: 100px;
       position: relative;
-      left: 20px;
-      bottom: 20px;
+      left: 25px;
+      bottom: 25px;
     }
     .tile-37 {
       // background-color: beige;
@@ -276,11 +282,11 @@
       grid-row: 4;
 
       transform: rotate(90deg);
-      width: 60px;
+      width: 50px;
       height: 100px;
       position: relative;
-      left: 20px;
-      bottom: 20px;
+      left: 25px;
+      bottom: 25px;
     }
     .tile-38 {
       // background-color: beige;
@@ -288,22 +294,23 @@
       grid-row: 3;
 
       transform: rotate(90deg);
-      width: 60px;
+      width: 50px;
       height: 100px;
       position: relative;
-      left: 20px;
-      bottom: 20px;
+      left: 25px;
+      bottom: 25px;
     }
     .tile-39 {
       // background-color: beige;
       grid-column: 1;
       grid-row: 2;
+
       transform: rotate(90deg);
-      width: 60px;
+      width: 50px;
       height: 100px;
       position: relative;
-      left: 20px;
-      bottom: 20px;
+      left: 25px;
+      bottom: 25px;
       border-left: 1px solid;
     }
 
@@ -322,7 +329,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 140px;
+      width: 120px;
       text-transform: uppercase;
       font-size: 14px;
 
@@ -361,7 +368,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 140px;
+      width: 120px;
       text-transform: uppercase;
       font-size: 14px;
 
@@ -373,6 +380,10 @@
         width: 95%;
         height: 95%;
         border-radius: 3px;
+
+        p {
+          text-align: center;
+        }
       }
     }
   }

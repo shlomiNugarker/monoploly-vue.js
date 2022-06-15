@@ -26,6 +26,9 @@
       </div>
       <diceCmp :currDice="currDice" @throwDice="throwDice" />
     </div>
+
+    <playersListCmp :players="players" />
+    <router-view></router-view>
   </section>
 </template>
 
@@ -46,6 +49,7 @@ import diceCmp from '../cmps/tiles/dice-cmp.vue'
 import propertyCard from '../cmps/cards/property-card.vue'
 import utilityCard from '../cmps/cards/utility-card.vue'
 import readingRailroadCard from '../cmps/cards/reading-railroad-card.vue'
+import playersListCmp from '../cmps/players-list-cmp.vue'
 import { utilService } from '../services/util.service'
 export default {
   name: 'board-view',
@@ -101,14 +105,64 @@ export default {
           name: 'Shlomi',
           position: 0,
           propertyCards: [],
-          balance: 1000,
+          balance: 2000,
+          colorToken: 'blue',
         },
         {
           _id: 'p101',
           name: 'Eden',
           position: 0,
           propertyCards: [],
-          balance: 1000,
+          balance: 2000,
+          colorToken: 'red',
+        },
+        {
+          _id: 'p101',
+          name: 'Eden',
+          position: 0,
+          propertyCards: [],
+          balance: 2000,
+          colorToken: 'red',
+        },
+        {
+          _id: 'p101',
+          name: 'Eden',
+          position: 0,
+          propertyCards: [],
+          balance: 2000,
+          colorToken: 'red',
+        },
+        {
+          _id: 'p101',
+          name: 'Eden',
+          position: 0,
+          propertyCards: [],
+          balance: 2000,
+          colorToken: 'red',
+        },
+        {
+          _id: 'p101',
+          name: 'Eden',
+          position: 0,
+          propertyCards: [],
+          balance: 2000,
+          colorToken: 'red',
+        },
+        {
+          _id: 'p101',
+          name: 'Eden',
+          position: 0,
+          propertyCards: [],
+          balance: 2000,
+          colorToken: 'red',
+        },
+        {
+          _id: 'p101',
+          name: 'Eden',
+          position: 0,
+          propertyCards: [],
+          balance: 2000,
+          colorToken: 'red',
         },
       ],
 
@@ -470,8 +524,6 @@ export default {
         (player) => player._id === playerToStep._id
       )
       this.players[idx].position = newPosition
-
-      console.log(this.tiles[newPosition])
       // this.$alert(
       //   'Do you want to buy ' + `${this.tiles[newPosition].name}`
       // ).then(() => {
@@ -506,18 +558,9 @@ export default {
     propertyCard,
     utilityCard,
     readingRailroadCard,
+    playersListCmp,
   },
 }
 </script>
 
-<style>
-.cards {
-  width: 90%;
-
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-</style>
+<style></style>
