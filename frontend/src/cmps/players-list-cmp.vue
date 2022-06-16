@@ -5,7 +5,7 @@
       :key="player._id"
       :player="player"
     />
-    <button @click="isListOpen = !isListOpen">
+    <button class="toggle-list-btn" @click="isListOpen = !isListOpen">
       <font-awesome-icon v-if="!isListOpen" icon="angle-left" />
       <font-awesome-icon v-if="isListOpen" icon="angle-right" />
     </button>
@@ -21,7 +21,7 @@ export default {
   name: 'players-list-cmp',
   data() {
     return {
-      isListOpen: true,
+      isListOpen: false,
     }
   },
   created() {},
@@ -38,13 +38,4 @@ export default {
 }
 </script>
 
-<style>
-button {
-  position: absolute;
-  left: -28px;
-  height: 90px;
-  border-radius: 5px;
-  padding: 10px;
-  border: none;
-}
-</style>
+<style></style>

@@ -1,33 +1,39 @@
 <template>
-  <section class="board-view">
+  <section class="board-view" v-if="board">
     <div class="container">
       <component
         :is="cmp"
         :class="'tile tile-' + idx"
-        v-for="(cmp, idx) in cmpsOrder"
+        v-for="(cmp, idx) in board.cmpsOrder"
         :key="idx"
-        :tile="tiles[idx]"
+        :tile="board.tiles[idx]"
       />
+
       <div class="center">
-        <div>Turn: {{ turn.name }}</div>
+        <div>Turn: turn.name</div>
       </div>
+
       <div class="chance" @click="takeCard">
         <div class="cards-chance">
           <p>Chance</p>
         </div>
       </div>
+
       <div class="communiyt">
         <div class="cards-community">
           <p>Community chest</p>
         </div>
       </div>
+
       <div class="logo">
         <img src="../styles/icon/Monopoly-Logo.svg" alt="" />
       </div>
+
       <diceCmp :currDice="currDice" @throwDice="throwDice" />
     </div>
 
-    <playersListCmp :players="players" />
+    <playersListCmp :players="board.players" />
+    {{}}
     <router-view></router-view>
   </section>
 </template>
@@ -57,445 +63,25 @@ export default {
     return {
       turn: null,
       currDice: null,
-      cmpsOrder: [
-        'startCmp', // 0
-        'tileCmp',
-        'communityCmp',
-        'tileCmp',
-        'incomeCmp',
-        'railroadCmp', // 5
-        'tileCmp',
-        'chanceCmp',
-        'tileCmp',
-        'tileCmp',
-        'jailCmp', // 10
-        'tileCmp',
-        'electricCmp',
-        'tileCmp',
-        'tileCmp',
-        'railroadCmp', //15
-        'tileCmp',
-        'communityCmp',
-        'tileCmp',
-        'tileCmp',
-        'parkingCmp', // 20
-        'tileCmp',
-        'chanceCmp',
-        'tileCmp',
-        'tileCmp',
-        'railroadCmp', // 25
-        'tileCmp',
-        'tileCmp',
-        'waterWorkCmp',
-        'tileCmp',
-        'sendToJailCmp', // 30
-        'tileCmp',
-        'tileCmp',
-        'communityCmp',
-        'tileCmp',
-        'railroadCmp', //35
-        'chanceCmp',
-        'tileCmp',
-        'luxuryTaxCmp',
-        'tileCmp',
-      ],
-      players: [
-        {
-          _id: 'p100',
-          name: 'Shlomi',
-          position: 0,
-          propertyCards: [],
-          balance: 2000,
-          colorToken: 'blue',
-        },
-        {
-          _id: 'p101',
-          name: 'Eden',
-          position: 0,
-          propertyCards: [],
-          balance: 2000,
-          colorToken: 'red',
-        },
-        {
-          _id: 'p101',
-          name: 'Eden',
-          position: 0,
-          propertyCards: [],
-          balance: 2000,
-          colorToken: 'red',
-        },
-        {
-          _id: 'p101',
-          name: 'Eden',
-          position: 0,
-          propertyCards: [],
-          balance: 2000,
-          colorToken: 'red',
-        },
-        {
-          _id: 'p101',
-          name: 'Eden',
-          position: 0,
-          propertyCards: [],
-          balance: 2000,
-          colorToken: 'red',
-        },
-        {
-          _id: 'p101',
-          name: 'Eden',
-          position: 0,
-          propertyCards: [],
-          balance: 2000,
-          colorToken: 'red',
-        },
-        {
-          _id: 'p101',
-          name: 'Eden',
-          position: 0,
-          propertyCards: [],
-          balance: 2000,
-          colorToken: 'red',
-        },
-        {
-          _id: 'p101',
-          name: 'Eden',
-          position: 0,
-          propertyCards: [],
-          balance: 2000,
-          colorToken: 'red',
-        },
-      ],
-
-      tiles: [
-        {
-          name: 'Go',
-          players: [],
-          owner: null,
-          price: 60,
-          type: 'go',
-        },
-        {
-          name: 'Mediterranean Avenue',
-          players: [],
-          owner: null,
-          color: '#562e22',
-          price: 60,
-          type: 'city',
-        },
-        {
-          name: 'Community chest',
-          players: [],
-          owner: null,
-          color: '',
-          type: 'CommunityChest',
-        },
-        {
-          name: 'Baltic Avenue',
-          players: [],
-          owner: null,
-          color: '#562e22',
-          price: 60,
-          type: 'city',
-        },
-        {
-          name: 'Income tax',
-          players: [],
-          owner: null,
-          color: '',
-          price: 200,
-          type: 'tax',
-        },
-        {
-          // 5
-          name: 'Reading Railroad',
-          players: [],
-          owner: null,
-          color: '',
-          price: 200,
-          type: 'company',
-        },
-        {
-          name: 'Oriental Avenue',
-          players: [],
-          owner: null,
-          color: '#95b8cb',
-          price: 100,
-          type: 'city',
-        },
-        {
-          name: 'Chance',
-          players: [],
-          owner: null,
-          type: 'chance',
-        },
-        {
-          name: 'Vermont Avenue',
-          players: [],
-          owner: null,
-          color: '#95b8cb',
-          price: 100,
-          type: 'city',
-        },
-        {
-          name: 'Connecticut Avenue',
-          players: [],
-          owner: null,
-          color: '#95b8cb',
-          price: 120,
-          type: 'city',
-        },
-        {
-          // 10
-          name: 'jail',
-          players: [],
-          owner: null,
-          type: 'visit',
-        },
-        {
-          name: 'St. Charles Place',
-          players: [],
-          owner: null,
-          color: '#cb5382',
-          price: 140,
-          type: 'city',
-        },
-        {
-          name: 'Electric Company',
-          players: [],
-          owner: null,
-          color: '',
-          price: 140,
-          type: 'company',
-        },
-        {
-          name: 'States Avenue',
-          players: [],
-          owner: null,
-          color: '#cb5382',
-          price: 140,
-          type: 'city',
-        },
-        {
-          name: 'Virginia Avenue',
-          players: [],
-          owner: null,
-          color: '#cb5382',
-          price: 160,
-          type: 'city',
-        },
-        {
-          // 15
-          name: 'Pennsylvania Railroad',
-          players: [],
-          owner: null,
-          color: '',
-          price: 200,
-          type: 'company',
-        },
-        {
-          name: 'St. James Place',
-          players: [],
-          owner: null,
-          color: '#ffa600',
-          price: 100,
-          type: 'city',
-        },
-        {
-          name: 'Community chest',
-          players: [],
-          owner: null,
-          type: 'CommunityChest',
-        },
-        {
-          name: 'Tennessee Avenue',
-          players: [],
-          owner: null,
-          color: '#ffa600',
-          price: 180,
-          type: 'city',
-        },
-        {
-          name: 'New York Avenue',
-          players: [],
-          owner: null,
-          color: '#ffa600',
-          price: 200,
-          type: 'city',
-        },
-
-        {
-          // 20
-          name: 'Parking',
-          players: [],
-          owner: null,
-          color: '',
-          type: 'parking',
-        },
-        {
-          name: 'Kentucky Avenue',
-          players: [],
-          owner: null,
-          color: '#cf3b30',
-          price: 220,
-          type: 'city',
-        },
-        {
-          name: 'Chance',
-          players: [],
-          owner: null,
-          color: '',
-          type: 'chance',
-        },
-        {
-          name: 'Indiana Avenue',
-          players: [],
-          owner: null,
-          color: '#cf3b30',
-          price: 220,
-          type: 'city',
-        },
-        {
-          name: 'Illinois Avenue',
-          players: [],
-          owner: null,
-          color: '#cf3b30',
-          price: 240,
-          type: 'city',
-        },
-        {
-          // 25
-          name: 'B. & O. Railroad',
-          players: [],
-          owner: null,
-          color: '',
-          price: 200,
-          type: 'company',
-        },
-        {
-          name: 'Atlantic Avenue',
-          players: [],
-          owner: null,
-          color: '#d3c11b',
-          price: 260,
-          type: 'city',
-        },
-        {
-          name: 'Ventnor Avenue',
-          players: [],
-          owner: null,
-          color: '#d3c11b',
-          price: 260,
-          type: 'city',
-        },
-        {
-          name: 'Water  Works',
-          players: [],
-          owner: null,
-          color: '',
-          price: 100,
-          type: 'company',
-        },
-
-        {
-          name: 'Marvin Gardens',
-          players: [],
-          owner: null,
-          color: '#d3c11b',
-          price: 280,
-          type: 'city',
-        },
-        {
-          // 30
-          name: 'Send To Jail',
-          players: [],
-          owner: null,
-          color: '',
-          type: 'jail',
-        },
-        {
-          name: 'Pacific Avenue',
-          players: [],
-          owner: null,
-          color: '#0ab842',
-          price: 300,
-          type: 'city',
-        },
-        {
-          name: 'North Carolina Avenue',
-          players: [],
-          owner: null,
-          color: '#0ab842',
-          price: 300,
-          type: 'city',
-        },
-        {
-          name: 'Community chest',
-          players: [],
-          owner: null,
-          color: '',
-          type: 'CommunityChest',
-        },
-        {
-          name: 'Pennsylvania Avenue',
-          players: [],
-          owner: null,
-          color: '#0ab842',
-          price: 320,
-          type: 'city',
-        },
-        {
-          // 35
-          name: 'Short Line',
-          players: [],
-          owner: null,
-          color: '',
-          price: 200,
-          type: 'company',
-        },
-        {
-          name: 'Chance',
-          players: [],
-          owner: null,
-          color: '',
-          type: 'chance',
-        },
-        {
-          name: 'Park Place',
-          players: [],
-          owner: null,
-          color: '#2863ad',
-          price: 350,
-          type: 'city',
-        },
-        {
-          name: 'Luxury Tax',
-          players: [],
-          owner: null,
-          color: '',
-          price: 75,
-          type: 'tax',
-        },
-        {
-          // 39
-          name: 'Boardwalk',
-          players: [],
-          owner: null,
-          color: '#2863ad',
-          price: 400,
-          type: 'city',
-        },
-      ],
     }
   },
-  computed: {},
+  computed: {
+    board() {
+      return this.$store.getters.board
+    },
+    players() {
+      return this.$store.getters.players
+    },
+  },
   created() {
-    this.tiles[0].players = this.players
-    this.turn = this.players[0]
+    // this.turn = this.players[0]
+    // const boardId = this.$route.params.boardId
+    const boardId = 'b101'
+    this.$store.dispatch({ type: 'getBoardById', boardId })
+    this.$store.dispatch({ type: 'setCurrPlayer' })
   },
   methods: {
-    takeCard() {
-      // this.$alert('card')
-    },
+    takeCard() {},
     throwDice() {
       var dice = [
         utilService.getRandomInt(1, 7),
@@ -503,9 +89,12 @@ export default {
       ]
       this.currDice = dice
 
-      this.doSteps()
+      // this.doSteps()
     },
     doSteps() {
+      this.$store.dispatch({ type: 'doSteps', currDice: [...this.currDice] })
+
+      /////////////////////////////////////////////////
       var playerToStep = { ...this.turn }
 
       // Remove player from last pos:

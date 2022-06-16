@@ -1,5 +1,5 @@
 .players-list-cmp {
-  position: absolute;
+  position: fixed;
   top: 50%;
   transform: translate(0, -50%);
   right: 0;
@@ -7,7 +7,7 @@
   padding: 5px;
   border-radius: 5px;
   min-height: 200px;
-  width: 215px;
+  width: 245px;
   display: flex;
   flex-direction: row-reverse;
   flex-wrap: wrap;
@@ -16,8 +16,18 @@
   transition: right 0.3s;
 
   &.list-close {
-    // transition: right 0.3s;
-    // right: -215px;
+    transition: right 0.3s;
+    right: -245px;
     // visibility: hidden;
+  }
+
+  .toggle-list-btn {
+    position: absolute;
+    left: -28px;
+    height: 90px;
+    border-radius: 5px;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
   }
 }

@@ -14,7 +14,7 @@ const router = createRouter({
       component: homeView,
     },
     {
-      path: '/board',
+      path: '/board', // /:boardId
       name: 'board',
       component: boardView,
       children: [
