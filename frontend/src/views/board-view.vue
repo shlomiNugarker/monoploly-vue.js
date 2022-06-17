@@ -74,8 +74,6 @@ export default {
     },
   },
   created() {
-    // this.turn = this.players[0]
-    // const boardId = this.$route.params.boardId
     const boardId = 'b101'
     this.$store.dispatch({ type: 'getBoardById', boardId })
     this.$store.dispatch({ type: 'setCurrPlayer' })
@@ -89,45 +87,10 @@ export default {
       ]
       this.currDice = dice
 
-      // this.doSteps()
+      this.doSteps()
     },
     doSteps() {
       this.$store.dispatch({ type: 'doSteps', currDice: [...this.currDice] })
-
-      /////////////////////////////////////////////////
-      var playerToStep = { ...this.turn }
-
-      // Remove player from last pos:
-      this.tiles[playerToStep.position].players = this.tiles[
-        playerToStep.position
-      ].players.filter((player) => playerToStep._id !== player._id)
-
-      let newPosition =
-        playerToStep.position + this.currDice[0] + this.currDice[1]
-
-      if (newPosition > 39) newPosition -= 40
-
-      // place player in new pos:
-      this.tiles[newPosition].players.push(playerToStep)
-      var idx = this.players.findIndex(
-        (player) => player._id === playerToStep._id
-      )
-      this.players[idx].position = newPosition
-      // this.$alert(
-      //   'Do you want to buy ' + `${this.tiles[newPosition].name}`
-      // ).then(() => {
-      //   console.log('than')
-      // })
-
-      this.swichToNextPlayer()
-    },
-    swichToNextPlayer() {
-      var idx = this.players.findIndex((player) => player._id === this.turn._id)
-      if (idx + 1 < this.players.length) {
-        this.turn = this.players[idx + 1]
-      } else {
-        this.turn = this.players[0]
-      }
     },
   },
   components: {

@@ -64,6 +64,14 @@ function _createBoard(name) {
     _id: 'b101',
     title: name,
     createdAt: new Date(),
+    currPLayer: {
+      _id: 'p100',
+      name: 'player-0',
+      position: 0,
+      propertyCards: [],
+      balance: 2000,
+      colorToken: 'blue',
+    },
     players: [
       {
         _id: 'p100',
