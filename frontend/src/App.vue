@@ -15,7 +15,10 @@
 <script>
 export default {
   name: 'App',
-  created() {},
+  created() {
+    const boardId = 'b101'
+    this.$store.dispatch({ type: 'getBoardById', boardId })
+  },
   computed: {},
   components: {},
 }
@@ -25,6 +28,7 @@ export default {
 .links {
   background: rgb(255, 150, 150);
   position: fixed;
+  z-index: 5;
 }
 a {
   color: rgba(0, 0, 0, 0.715);

@@ -1,13 +1,14 @@
 .reading-railroad-card {
-  min-width: 275px;
-  min-height: 270px;
+  min-width: 250px;
+  min-height: 255px;
   background-color: #f6f4f4;
-  padding: 15px;
+  padding: 5px;
   border-radius: 3px;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 3px;
+  font-size: 12px;
 
   .containerr {
     width: 100%;

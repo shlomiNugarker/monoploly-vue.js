@@ -21,6 +21,10 @@
 @import './components/tiles/jail-cmp';
 @import './components/tiles/dice-cmp';
 
+// MODALS
+@import './components/modals/property-card-modal.scss';
+@import './components/modals/community-chest-modal.scss';
+@import './components/modals/modals-cmps.scss';
 // CARDS
 @import './components/cards/property-card';
 @import './components/cards/utilitie-card';

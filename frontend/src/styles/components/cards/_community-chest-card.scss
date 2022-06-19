@@ -2,9 +2,10 @@
   background-color: #ffeb43;
   border-radius: 3px;
   display: flex;
-  width: 340px;
-  height: 230px;
+  width: 300px;
+  height: 180px;
   margin: 3px;
+  font-size: 12px;
   .containerr {
     position: relative;
     height: 80%;
@@ -35,7 +36,7 @@
     }
 
     .img-cc {
-      width: 150px;
+      width: 120px;
     }
   }
 }

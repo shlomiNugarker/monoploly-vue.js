@@ -2,35 +2,32 @@ import { boardService } from '../../services/board/board-service'
 
 export default {
   state: {
-    isLoading: false,
     board: null,
-    filterBy: null,
     currDice: [],
   },
   getters: {
     board(state) {
       return state.board
     },
+    cards(state) {
+      return state.board?.cards
+    },
     cmpsOrder(state) {
       return state.cmpsOrder
+    },
+    currPLayer(state) {
+      return state.board.currPLayer
     },
   },
   mutations: {
     setBoard(state, { board }) {
       state.board = board
-      // state.isLoading = false
     },
   },
   actions: {
     async getBoardById({ state, commit }, { boardId }) {
       try {
-        // commit({
-        //   type: 'setLoading',
-        //   bool: true,
-        // })
-
         const board = await boardService.getBoardById(boardId)
-
         commit({
           type: 'setBoard',
           board,
@@ -50,8 +47,9 @@ export default {
           currPosition
         ].players.filter((player) => playerToStep._id !== player._id)
 
-        const newPosition = playerToStep.position + currDice[0] + currDice[1]
+        let newPosition = playerToStep.position + currDice[0] + currDice[1]
         if (newPosition > 39) newPosition -= 40
+        playerToStep.position = newPosition // POSITION AFTER UPDATE?
 
         // place player in new pos:
         copyBoard.tiles[newPosition].players.push(playerToStep)
@@ -62,10 +60,6 @@ export default {
 
         await boardService.save(copyBoard)
         commit({ type: 'setBoard', board: copyBoard })
-
-        dispatch({
-          type: 'swichToNextPlayer',
-        })
       } catch (err) {
         console.log('cannot do steps..', err)
       }
@@ -90,6 +84,30 @@ export default {
         console.log('cannot swich players..', err)
       }
     },
-    setCurrPlayer({ state, commit }, { currDice }) {},
+    async buyPropertyCard({ state, commit }, { cardId }) {
+      try {
+        let copyBoard = JSON.parse(JSON.stringify(state.board))
+        let playerId = copyBoard.currPLayer._id
+        const position = state.board.currPLayer.position
+        const playerIdx = copyBoard.players.findIndex(
+          (player) => player._id === playerId
+        )
+        const cardIdx = copyBoard.cards.propertyCards.findIndex(
+          (card) => card._id === cardId
+        )
+        var cardToBuy = copyBoard.cards.propertyCards.splice(cardIdx, 1)
+        copyBoard.players[playerIdx].balance -= cardToBuy[0].price
+        copyBoard.players[playerIdx].propertyCards.push(...cardToBuy)
+        copyBoard.tiles[position].owner = {
+          name: copyBoard.currPLayer.name,
+          _id: copyBoard.currPLayer._id,
+        }
+
+        await boardService.save(copyBoard)
+        commit({ type: 'setBoard', board: copyBoard })
+      } catch (err) {
+        console.log('cannot buy property card..', err)
+      }
+    },
   },
 }

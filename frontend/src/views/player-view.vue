@@ -1,7 +1,7 @@
 <template>
   <section class="player-view">
     <div class="go-back" @click="closeDetails">x</div>
-    <div class="containerr" v-if="players">
+    <div class="containerr" v-if="player">
       <div class="player-name">
         <p>name: {{ player.name }}</p>
       </div>
@@ -56,7 +56,7 @@ export default {
     getPlayer() {
       var id = this.$route.params.playerId
       var idx = this.board.players.findIndex((player) => player._id === id)
-      this.player = this.players[idx]
+      this.player = this.board.players[idx]
     },
   },
   components: {
