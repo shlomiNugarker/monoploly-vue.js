@@ -38,7 +38,6 @@ export default {
   data() {
     return {
       player: null,
-      // players: null,
     }
   },
   computed: {

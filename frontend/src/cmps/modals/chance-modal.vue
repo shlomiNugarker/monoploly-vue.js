@@ -1,8 +1,8 @@
 <template>
-  <section class="community-chest-modal">
+  <section class="chance-modal">
     <div class="modal-container">
-      <communityChestCard :card="card" />
-      <button @click="closeModal">OK</button>
+      <chanceCards :card="card" />
+      <button @click="doChanceTask">OK</button>
     </div>
   </section>
 </template>
@@ -17,7 +17,7 @@ export default {
   props: {
     card: Object,
   },
-  name: 'community-chest-modal',
+  name: 'chance-modal',
   data() {
     return {}
   },
@@ -28,8 +28,8 @@ export default {
   },
   created() {},
   methods: {
-    closeModal() {
-      this.$emit('closeModal')
+    doChanceTask() {
+      this.$emit('doChanceTask')
     },
   },
   components: {

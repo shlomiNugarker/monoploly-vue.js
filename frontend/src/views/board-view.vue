@@ -40,21 +40,13 @@
 
       <div>
         <div class="bg" v-if="currCard.type">
-          <!-- <cityModal
-            v-if="isCityModalOpen"
-            :card="currCard"
-            @closeCityModal="closeCityModal"
-            @buyCity="buyCity"
-          />
-          <communityChestModal
-            v-if="isCommunityModalOpen"
-            :card="currCard"
-            @closeCommunityModal="closeCommunityModal"
-          /> -->
           <modal
             :card="currCard"
             @closePropertyModal="closePropertyModal"
             @buyPropertyCard="buyPropertyCard"
+            @closeModal="closeModal"
+            @buyRailroadCard="buyRailroadCard"
+            @doChanceTask="doChanceTask"
           />
         </div>
       </div>
@@ -80,7 +72,6 @@ import propertyCard from '../cmps/cards/property-card.vue'
 import utilityCard from '../cmps/cards/utility-card.vue'
 import readingRailroadCard from '../cmps/cards/reading-railroad-card.vue'
 import playersListCmp from '../cmps/players-list-cmp.vue'
-// import communityChestModal from '../cmps/modals/community-chest-modal.vue'
 import modal from '../cmps/modals/modal-cmps.vue'
 import { utilService } from '../services/util.service'
 export default {
@@ -107,71 +98,107 @@ export default {
     },
   },
   created() {
-    // setTimeout(() => {
-    //   this.currCard = this.cards.propertyCards[5]
-    // }, 200)
-    // this.currCard = this.card.propertyCards[0]
     const boardId = 'b101'
     this.$store.dispatch({ type: 'getBoardById', boardId })
   },
   methods: {
     swichToNextPlayer() {
-      this.$store
-        .dispatch({
-          type: 'swichToNextPlayer',
-        })
-        .then()
+      this.currDice = null
+      this.$store.dispatch({
+        type: 'swichToNextPlayer',
+      })
     },
     throwDice() {
       // var dice = [
       //   utilService.getRandomInt(1, 7),
       //   utilService.getRandomInt(1, 7),
       // ]
-      var dice = [1, 1]
+      var dice = [0, 4]
       this.currDice = dice
 
       this.doSteps()
     },
-    doSteps() {
-      this.$store
-        .dispatch({ type: 'doSteps', currDice: [...this.currDice] })
-        .then(() => {
-          this.checkCondition()
-        })
+    async doSteps() {
+      let newPosition =
+        this.currPLayer.position + this.currDice[0] + this.currDice[1]
+      if (newPosition > 39) newPosition -= 40
+
+      await this.$store.dispatch({
+        type: 'doSteps',
+        newPosition,
+      })
+      this.checkCondition()
     },
-    buyPropertyCard(cardId) {
-      this.$store
-        .dispatch({
-          type: 'buyPropertyCard',
-          cardId,
-        })
-        .then(() => {
-          this.currCard = {}
-          // this.swichToNextPlayer()
-        })
+    async buyPropertyCard(cardId) {
+      await this.$store.dispatch({
+        type: 'buyPropertyCard',
+        cardId,
+      })
+      this.currCard = {}
+      this.swichToNextPlayer()
+    },
+    async buyRailroadCard(cardId) {
+      await this.$store.dispatch({
+        type: 'buyRailroadCard',
+        cardId,
+      })
+      this.currCard = {}
+      this.swichToNextPlayer()
     },
     closePropertyModal() {
-      this.isCityModalOpen = false
       this.currCard = {}
-      // this.swichToNextPlayer()
+      this.swichToNextPlayer()
+    },
+    openCommunityModal() {
+      const length = this.cards.communityChestCards.length
+
+      let cardIdx = utilService.getRandomInt(0, length)
+      this.currCard = this.cards.communityChestCards[cardIdx]
+    },
+    openChanceModal() {
+      const length = this.cards.chanceCards.length
+      // let cardIdx = utilService.getRandomInt(0, length)
+      let cardIdx = 1
+      this.currCard = this.cards.chanceCards[cardIdx]
+    },
+    async doChanceTask() {
+      await this.$store.dispatch({
+        type: 'doChanceTask',
+        card: this.currCard,
+      })
+      this.closeModal()
+    },
+    openRailroadModal(name) {
+      const cardIdx = this.cards.railroadsCards.findIndex(
+        (card) => card.name === name
+      )
+      this.currCard = this.cards.railroadsCards[cardIdx]
     },
     openPropertyModal(name) {
       const cardIdx = this.cards.propertyCards.findIndex(
         (card) => card.title === name
       )
       this.currCard = this.cards.propertyCards[cardIdx]
-      console.log(this.currCard)
     },
-    openCommunityModal() {
-      console.log('openCommunityModal')
-      let cardIdx = utilService.getRandomInt(0, 16)
-      this.currCard = this.cards.communityChestCards[cardIdx]
-      console.log(this.currCard)
-      // this.isCommunityModalOpen = true
+    closeModal() {
+      this.currCard = {}
+      this.swichToNextPlayer()
     },
-    openChanceyModal() {
-      console.log('openChanceyModal')
-      this.isChanceModalOpen = true
+    async payTax(taxType) {
+      let pay = taxType === 'Income tax' ? 200 : 75
+      if (taxType === 'Income tax') pay = 200
+      else if (taxType === 'Luxury Tax') pay = 75
+      else if (taxType === 'Water  Works') pay = 100
+      const msg = `${taxType}, pay ${pay}$`
+
+      this.currCard = {
+        type: 'msg',
+        msg,
+      }
+      await this.$store.dispatch({
+        type: 'payTax',
+        pay,
+      })
     },
     checkCondition() {
       let currTile = this.board.tiles[this.currPLayer.position]
@@ -187,20 +214,24 @@ export default {
 
             break
           case 'chance':
-            console.log('chance / swich')
+            this.openChanceModal()
             break
           case 'jail':
             console.log('jail / swich')
             break
           case 'visit':
-            console.log('city / swich')
+            console.log('visit / swich')
             this.swichToNextPlayer()
             break
           case 'company':
             console.log('company / swich')
+
+            this.openRailroadModal()
+
             break
           case 'tax':
             console.log('tax / swich')
+            this.payTax(currTile.name)
             break
           case 'communityChest':
             this.openCommunityModal()
@@ -211,9 +242,11 @@ export default {
           default:
           // some code
         }
+      } else if (currTile.owner._id === this.currPLayer._id) {
+        console.log('this is your city')
       } else {
         // NOT FREE..
-        this.$alert('you need to pay..')
+        console.log('you need to pay rent..')
       }
     },
   },

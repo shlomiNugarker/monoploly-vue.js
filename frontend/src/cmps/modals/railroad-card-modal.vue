@@ -1,19 +1,19 @@
 <template>
-  <section class="property-modal">
+  <section class="railroad-modal">
     <div class="modal-container">
       <div class="title">
-        <p>{{ currPLayer.name }}, do you want to buy this city?</p>
+        <p>{{ currPLayer.name }}, do you want to buy this company?</p>
         <p>{{ card.price }}$</p>
       </div>
 
       <div class="body-modal">
         <div>
-          <component :is="'propertyCard'" :card="card" />
+          <component :is="'readingRailroadCard'" :card="card" />
         </div>
 
         <div class="btns-container">
-          <button @click="buyPropertyCard(card._id)">Yes</button>
-          <button @click="closePropertyModal">No</button>
+          <button @click="buyRailroadCard(card._id)">Yes</button>
+          <button @click="closeModal">No</button>
         </div>
       </div>
     </div>
@@ -21,13 +21,12 @@
 </template>
 
 <script>
-import propertyCard from '../cards/property-card.vue'
-
+import readingRailroadCard from '../cards/reading-railroad-card.vue'
 export default {
   props: {
     card: Object,
   },
-  name: 'city-modal',
+  name: 'railroad-modal',
   data() {
     return {}
   },
@@ -38,15 +37,15 @@ export default {
   },
   created() {},
   methods: {
-    closePropertyModal() {
-      this.$emit('closePropertyModal')
+    closeModal() {
+      this.$emit('closeModal')
     },
-    buyPropertyCard(cardId) {
-      this.$emit('buyPropertyCard', cardId)
+    buyRailroadCard(cardId) {
+      this.$emit('buyRailroadCard', cardId)
     },
   },
   components: {
-    propertyCard,
+    readingRailroadCard,
   },
 }
 </script>

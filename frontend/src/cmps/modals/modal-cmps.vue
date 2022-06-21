@@ -6,9 +6,31 @@
       @closePropertyModal="closePropertyModal"
       @buyPropertyCard="buyPropertyCard"
     />
+
     <communityChestModal
       v-if="card.type === 'communityChestCard'"
       :card="card"
+      @closeModal="closeModal"
+    />
+
+    <chanceModal
+      v-if="card.type === 'chanceCards'"
+      :card="card"
+      @closeModal="closeModal"
+      @doChanceTask="doChanceTask"
+    />
+
+    <railroadCardModal
+      v-if="card.type === 'railroadCard'"
+      :card="card"
+      @buyRailroadCard="buyRailroadCard"
+      @closeModal="closeModal"
+    />
+
+    <msgModal
+      v-if="card.type === 'msg'"
+      :card="card"
+      @closeModal="closeModal"
     />
   </section>
 </template>
@@ -16,12 +38,12 @@
 <script>
 import propertyCardModal from './property-card-modal.vue'
 import communityChestModal from './community-chest-modal.vue'
+import railroadCardModal from './railroad-card-modal.vue'
+import chanceModal from './chance-modal.vue'
+import msgModal from './msg-modal.vue'
 
-// import propertyCard from '../cards/property-card.vue'
 // import utilityCard from '../cards/utility-card.vue'
-// import readingRailroadCard from '../cards/reading-railroad-card.vue'
-// import communityChestCard from '../cards/community-chest-card.vue'
-// import chanceCards from '../cards/chance-card.vue'
+
 export default {
   props: {
     card: Object,
@@ -43,10 +65,22 @@ export default {
     buyPropertyCard(cardId) {
       this.$emit('buyPropertyCard', cardId)
     },
+    buyRailroadCard(cardId) {
+      this.$emit('buyRailroadCard', cardId)
+    },
+    closeModal() {
+      this.$emit('closeModal')
+    },
+    doChanceTask() {
+      this.$emit('doChanceTask')
+    },
   },
   components: {
     propertyCardModal,
     communityChestModal,
+    msgModal,
+    railroadCardModal,
+    chanceModal,
   },
 }
 </script>

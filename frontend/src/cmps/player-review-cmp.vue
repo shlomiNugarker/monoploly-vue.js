@@ -1,5 +1,5 @@
 <template>
-  <section class="player-review-cmp">
+  <section class="player-review-cmp" :class="currPLayerStyle">
     <div class="containerr" @click="openDetails(player._id)">
       <div>
         <p>
@@ -30,6 +30,15 @@ export default {
     return {}
   },
   created() {},
+  computed: {
+    currPLayer() {
+      return this.$store.getters.currPLayer
+    },
+    currPLayerStyle() {
+      if (this.currPLayer._id === this.player._id) return 'currPLayerStyle'
+      return ''
+    },
+  },
   methods: {
     openDetails(playerId) {
       console.log(playerId)
@@ -39,4 +48,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.currPLayerStyle {
+  border: 3px solid green;
+}
+</style>
