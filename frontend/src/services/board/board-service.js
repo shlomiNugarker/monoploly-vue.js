@@ -106,6 +106,9 @@ function _createBoard(name) {
         position: 0,
         propertyCards: [],
         railroadsCards: [],
+        utilitiesCards: [],
+        chanceCards: [],
+        isInJail: 0,
         balance: 2000,
         colorToken: 'blue',
       },
@@ -115,6 +118,9 @@ function _createBoard(name) {
         position: 0,
         propertyCards: [],
         railroadsCards: [],
+        utilitiesCards: [],
+        chanceCards: [],
+        isInJail: 0,
         balance: 2000,
         colorToken: '#409eff',
       },
@@ -181,7 +187,7 @@ function _createBoard(name) {
         owner: null,
         color: '',
         price: 200,
-        type: 'company',
+        type: 'railroad',
       },
       {
         name: 'Oriental Avenue',
@@ -233,7 +239,7 @@ function _createBoard(name) {
         owner: null,
         color: '',
         price: 140,
-        type: 'company',
+        type: 'utility',
       },
       {
         name: 'States Avenue',
@@ -257,7 +263,7 @@ function _createBoard(name) {
         owner: null,
         color: '',
         price: 200,
-        type: 'company',
+        type: 'railroad',
       },
       {
         name: 'St. James Place',
@@ -334,7 +340,7 @@ function _createBoard(name) {
         owner: null,
         color: '',
         price: 200,
-        type: 'company',
+        type: 'railroad',
       },
       {
         name: 'Atlantic Avenue',
@@ -358,7 +364,7 @@ function _createBoard(name) {
         owner: null,
         color: '',
         price: 100,
-        type: 'tax',
+        type: 'utility',
       },
 
       {
@@ -413,7 +419,7 @@ function _createBoard(name) {
         owner: null,
         color: '',
         price: 200,
-        type: 'company',
+        type: 'railroad',
       },
       {
         name: 'Chance',

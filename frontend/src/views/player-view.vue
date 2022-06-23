@@ -9,8 +9,16 @@
         <p>balance: {{ player.balance }}</p>
       </div>
       <div class="cards-player">
-        <p>propertyCards:</p>
+        <!-- <p>propertyCards:</p> -->
         <div v-for="card in player.propertyCards" :key="card._id">
+          {{ card.title }}
+        </div>
+        <!-- <p>propertyCards:</p> -->
+        <div v-for="card in player.railroadsCards" :key="card._id">
+          {{ card.title }}
+        </div>
+        <!-- <p>propertyCards:</p> -->
+        <div v-for="card in player.utilitiesCards" :key="card._id">
           {{ card.title }}
         </div>
         <div class="cards-container">

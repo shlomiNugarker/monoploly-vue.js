@@ -46,6 +46,7 @@
             @buyPropertyCard="buyPropertyCard"
             @closeModal="closeModal"
             @buyRailroadCard="buyRailroadCard"
+            @buyUtilityCard="buyUtilityCard"
             @doChanceTask="doChanceTask"
           />
         </div>
@@ -102,7 +103,6 @@ export default {
     },
   },
   created() {
-    console.log(this)
     const boardId = 'b101'
     this.$store.dispatch({ type: 'getBoardById', boardId })
   },
@@ -122,9 +122,10 @@ export default {
       // ]
       var dice = [4, 3]
       this.currDice = dice
+      // console.log(this.currPLayer.isNextPayByDice)
 
       if (this.isNextPayByDice?.isTrue) {
-        console.log(this.currPLayer.isNextPayByDice?.isTrue)
+        console.log(this.currPLayer.isNextPayByDice)
         this.payByDice()
         return
       }
@@ -167,6 +168,14 @@ export default {
       this.currCard = {}
       // this.swichToNextPlayer()
     },
+    async buyUtilityCard(cardId) {
+      await this.$store.dispatch({
+        type: 'buyUtilityCard',
+        cardId,
+      })
+      this.currCard = {}
+      // this.swichToNextPlayer()
+    },
 
     closePropertyModal() {
       this.currCard = {}
@@ -181,7 +190,7 @@ export default {
     openChanceModal() {
       const length = this.cards.chanceCards.length
       // let cardIdx = utilService.getRandomInt(0, length)
-      let cardIdx = 4
+      let cardIdx = 15
       this.currCard = this.cards.chanceCards[cardIdx]
     },
     async doChanceTask() {
@@ -200,6 +209,13 @@ export default {
       )
       this.currCard = this.cards.railroadsCards[cardIdx]
     },
+    openUtilityModal(name) {
+      const cardIdx = this.cards.utilitiesCards.findIndex(
+        (card) => card.name === name
+      )
+      this.currCard = this.cards.utilitiesCards[cardIdx]
+      console.log(this.currCard)
+    },
     openPropertyModal(name) {
       const cardIdx = this.cards.propertyCards.findIndex(
         (card) => card.title === name
@@ -211,7 +227,7 @@ export default {
       // this.swichToNextPlayer()
     },
     async payTax(taxType) {
-      let pay = taxType === 'Income tax' ? 200 : 75
+      let pay
       if (taxType === 'Income tax') pay = 200
       else if (taxType === 'Luxury Tax') pay = 75
       else if (taxType === 'Water  Works') pay = 100
@@ -250,10 +266,15 @@ export default {
             console.log('visit / swich')
             // this.swichToNextPlayer()
             break
-          case 'company':
-            console.log('company / swich')
+          case 'railroad':
+            console.log('Railroad / swich')
 
             this.openRailroadModal()
+
+            break
+          case 'utility':
+            console.log('utility / swich')
+            this.openUtilityModal()
 
             break
           case 'tax':
@@ -273,10 +294,11 @@ export default {
         this.$alert('this is your city')
       } else {
         // NOT FREE..
+        // TODO: ADD PAY RENT FUNC
         this.$alert('you need to pay rent..')
         if (this.currPLayer.isNextPayByDice) {
           this.$alert('Throw dice for pay !')
-          this.isNextPayByDice.isTrue = true
+          this.isNextPayByDice.isTrue = true //maybe save this on state ??
           this.isNextPayByDice.payTo = currTile.owner
         }
       }

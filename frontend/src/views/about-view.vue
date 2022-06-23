@@ -10,7 +10,7 @@
           />
 
           <utilityCard
-            v-for="card in cards.utilityCards"
+            v-for="card in cards.utilitiesCards"
             :key="card._id"
             :card="card"
           />
