@@ -81,6 +81,10 @@ export default {
       turn: null,
       currDice: null,
       currCard: {},
+      isNextPayByDice: {
+        isTrue: false,
+        payTo: null,
+      },
     }
   },
   computed: {
@@ -98,9 +102,11 @@ export default {
     },
   },
   created() {
+    console.log(this)
     const boardId = 'b101'
     this.$store.dispatch({ type: 'getBoardById', boardId })
   },
+
   methods: {
     swichToNextPlayer() {
       this.currDice = null
@@ -108,16 +114,30 @@ export default {
         type: 'swichToNextPlayer',
       })
     },
+
     throwDice() {
       // var dice = [
       //   utilService.getRandomInt(1, 7),
       //   utilService.getRandomInt(1, 7),
       // ]
-      var dice = [0, 4]
+      var dice = [4, 3]
       this.currDice = dice
 
+      if (this.isNextPayByDice?.isTrue) {
+        console.log(this.currPLayer.isNextPayByDice?.isTrue)
+        this.payByDice()
+        return
+      }
       this.doSteps()
     },
+    async payByDice(times = 10) {
+      let amount = (this.currDice[0] + this.currDice[1]) * times
+      let payTo = this.isNextPayByDice.payTo
+
+      await this.$store.dispatch({ type: 'payByDice', amount, payTo })
+      this.isNextPayByDice = {}
+    },
+
     async doSteps() {
       let newPosition =
         this.currPLayer.position + this.currDice[0] + this.currDice[1]
@@ -129,25 +149,28 @@ export default {
       })
       this.checkCondition()
     },
+
     async buyPropertyCard(cardId) {
       await this.$store.dispatch({
         type: 'buyPropertyCard',
         cardId,
       })
       this.currCard = {}
-      this.swichToNextPlayer()
+      // this.swichToNextPlayer()
     },
+
     async buyRailroadCard(cardId) {
       await this.$store.dispatch({
         type: 'buyRailroadCard',
         cardId,
       })
       this.currCard = {}
-      this.swichToNextPlayer()
+      // this.swichToNextPlayer()
     },
+
     closePropertyModal() {
       this.currCard = {}
-      this.swichToNextPlayer()
+      // this.swichToNextPlayer()
     },
     openCommunityModal() {
       const length = this.cards.communityChestCards.length
@@ -158,15 +181,18 @@ export default {
     openChanceModal() {
       const length = this.cards.chanceCards.length
       // let cardIdx = utilService.getRandomInt(0, length)
-      let cardIdx = 1
+      let cardIdx = 4
       this.currCard = this.cards.chanceCards[cardIdx]
     },
     async doChanceTask() {
+      const playerPosBefore = this.currPLayer.position
       await this.$store.dispatch({
         type: 'doChanceTask',
         card: this.currCard,
       })
-      this.closeModal()
+      this.currCard = {}
+      const playerPosAfter = this.currPLayer.position
+      if (playerPosAfter !== playerPosBefore) this.checkCondition()
     },
     openRailroadModal(name) {
       const cardIdx = this.cards.railroadsCards.findIndex(
@@ -182,7 +208,7 @@ export default {
     },
     closeModal() {
       this.currCard = {}
-      this.swichToNextPlayer()
+      // this.swichToNextPlayer()
     },
     async payTax(taxType) {
       let pay = taxType === 'Income tax' ? 200 : 75
@@ -201,6 +227,7 @@ export default {
       })
     },
     checkCondition() {
+      console.log('checking condition')
       let currTile = this.board.tiles[this.currPLayer.position]
       if (!currTile.owner || !Object.keys(currTile.owner).length) {
         // FREE TILE..
@@ -221,7 +248,7 @@ export default {
             break
           case 'visit':
             console.log('visit / swich')
-            this.swichToNextPlayer()
+            // this.swichToNextPlayer()
             break
           case 'company':
             console.log('company / swich')
@@ -243,10 +270,15 @@ export default {
           // some code
         }
       } else if (currTile.owner._id === this.currPLayer._id) {
-        console.log('this is your city')
+        this.$alert('this is your city')
       } else {
         // NOT FREE..
-        console.log('you need to pay rent..')
+        this.$alert('you need to pay rent..')
+        if (this.currPLayer.isNextPayByDice) {
+          this.$alert('Throw dice for pay !')
+          this.isNextPayByDice.isTrue = true
+          this.isNextPayByDice.payTo = currTile.owner
+        }
       }
     },
   },

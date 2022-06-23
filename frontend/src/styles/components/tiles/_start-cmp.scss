@@ -11,6 +11,7 @@
       left: 50%;
       transform: translate(-50%, -50%);
       font-size: 30px;
+      text-align: center;
     }
   }
 }
@@ -29,6 +30,12 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 10;
+
+  .player {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
   .token-player {
     font-size: 25px;

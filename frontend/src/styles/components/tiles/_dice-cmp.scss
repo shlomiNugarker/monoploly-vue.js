@@ -2,6 +2,7 @@
   grid-column: 8/10;
   grid-row: 2/4;
   cursor: pointer;
+  z-index: 3;
 
   .dice-container {
     display: flex;

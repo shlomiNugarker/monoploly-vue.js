@@ -1089,51 +1089,53 @@ function _createBoard(name) {
         {
           _id: 'chance-201',
           title: 'Chance',
-          description: 'Advance to "Go". (Collect $200) ',
+          description: 'Advance to "Go". (Collect $200).',
           background: '#ff5c00',
           type: 'chanceCards',
         },
         {
           _id: 'chance-202',
           title: 'Chance',
-          description: 'Advance token to Boardwalk.',
+          description:
+            'Advance to Illinois Ave. {Avenue}. If you pass Go, collect $200.',
           background: '#ff5c00',
           type: 'chanceCards',
         },
         {
           _id: 'chance-203',
           title: 'Chance',
-          description: 'Advance to Illinois Ave.',
+          description:
+            'Advance to St. Charles Place. If you pass Go, collect $200. ',
           background: '#ff5c00',
           type: 'chanceCards',
         },
         {
           _id: 'chance-204',
           title: 'Chance',
-          description: 'Advance to St. Charles Place.',
+          description:
+            'Advance token to the nearest Utility. If unowned, you may buy it from the Bank. If owned, throw dice and pay owner a total 10 (ten) times the amount thrown. ',
           background: '#ff5c00',
           type: 'chanceCards',
         },
         {
           _id: 'chance-205',
           title: 'Chance',
-          description: 'If you pass Go, collect $200.',
+          description:
+            'Advance to the nearest Railroad. If unowned, you may buy it from the Bank. If owned, pay owner twice the re tal to which they are otherwise entitled. If Railroad is unowned, you may buy it from the Bank.',
           background: '#ff5c00',
           type: 'chanceCards',
         },
         {
           _id: 'chance-206',
           title: 'Chance',
-          description:
-            'Advance token to the nearest Utility. If unowned, you may buy it from the Bank. If owned, throw dice and pay owner a total 10 times the amount thrown.',
+          description: 'Bank pays you dividend of $50. ',
           background: '#ff5c00',
           type: 'chanceCards',
         },
         {
           _id: 'chance-207',
           title: 'Chance',
-          description:
-            'Advance token to the nearest Utility. If unowned, you may buy it from the Bank. If owned, throw dice and pay owner a total 10 times the amount thrown.',
+          description: 'Get out of Jail Free.',
           background: '#ff5c00',
           type: 'chanceCards',
         },
@@ -1147,14 +1149,16 @@ function _createBoard(name) {
         {
           _id: 'chance-209',
           title: 'Chance',
-          description: 'Bank pays you dividend of $50. ',
+          description:
+            'Go to Jail. Go directly to Jail. Do not pass GO, do not collect $200.',
           background: '#ff5c00',
           type: 'chanceCards',
         },
         {
           _id: 'chance-210',
           title: 'Chance',
-          description: 'Your building and loan matures. Collect $150. ',
+          description:
+            'Make general repairs on all your property: For each house pay $25, For each hotel {pay} $100.',
           background: '#ff5c00',
           type: 'chanceCards',
         },
@@ -1169,7 +1173,7 @@ function _createBoard(name) {
           _id: 'chance-212',
           title: 'Chance',
           description:
-            'You have been elected Chairman of the Board. Pay each player $50.',
+            'Take a trip to Reading Railroad.  If you pass Go, collect $200. ',
           background: '#ff5c00',
           type: 'chanceCards',
         },
@@ -1177,14 +1181,15 @@ function _createBoard(name) {
           _id: 'chance-213',
           title: 'Chance',
           description:
-            'Make general repairs on all your property: For each house pay $25, For each hotel {pay} $100.',
+            'Take a walk on the Boardwalk. Advance token to Boardwalk. ',
           background: '#ff5c00',
           type: 'chanceCards',
         },
         {
           _id: 'chance-214',
           title: 'Chance',
-          description: ' Go directly to Jail.',
+          description:
+            ' You have been elected Chairman of the Board. Pay each player $50. ',
           background: '#ff5c00',
           type: 'chanceCards',
         },
@@ -1192,7 +1197,7 @@ function _createBoard(name) {
           _id: 'chance-215',
           title: 'Chance',
           description:
-            'Get out of Jail Free. This card may be kept until needed, or traded/sold.',
+            'Your building {and} loan matures. Receive {Collect} $150.',
           background: '#ff5c00',
           type: 'chanceCards',
         },

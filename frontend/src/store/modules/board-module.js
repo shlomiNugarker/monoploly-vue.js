@@ -147,6 +147,21 @@ export default {
         console.log('cannot pay tax')
       }
     },
+    async payByDice({ state, commit, dispatch }, { amount, payTo }) {
+      let copyBoard = JSON.parse(JSON.stringify(state.board))
+      const currPlayerIdx = copyBoard.players.findIndex(
+        (player) => player._id === copyBoard.currPLayer._id
+      )
+      const plyertoPayIdx = copyBoard.players.findIndex(
+        (player) => player._id === payTo._id
+      )
+      copyBoard.players[currPlayerIdx].balance -= amount
+      copyBoard.players[plyertoPayIdx].balance += amount
+      copyBoard.currPLayer.isNextPayByDice = {}
+
+      await boardService.save(copyBoard)
+      commit({ type: 'setBoard', board: copyBoard })
+    },
     async doChanceTask({ state, commit, dispatch }, { card }) {
       try {
         let copyBoard = JSON.parse(JSON.stringify(state.board))
@@ -171,19 +186,45 @@ export default {
             break
           case 'chance-202':
             console.log('chance-202')
-            newPosition = 39
+            console.log(state.board.currPLayer.position)
+            newPosition = 24
+            if (state.board.currPLayer.position > 35) {
+              console.log('insude')
+              copyBoard = JSON.parse(JSON.stringify(state.board))
+              copyBoard.players[playerIdx].balance += 200
+              await boardService.save(copyBoard)
+              commit({ type: 'setBoard', board: copyBoard })
+            }
             await dispatch({ type: 'doSteps', newPosition })
 
             break
           case 'chance-203':
             console.log('chance-203')
+            newPosition = 11
+            if (state.board.currPLayer.position > 35) {
+              copyBoard = JSON.parse(JSON.stringify(state.board))
+              copyBoard.players[playerIdx].balance += 200
+              await boardService.save(copyBoard)
+              commit({ type: 'setBoard', board: copyBoard })
+            }
+            await dispatch({ type: 'doSteps', newPosition })
+            break
+          case 'chance-205':
+            console.log('chance-205')
+            let newPosition
+            const currPosition = state.board.currPLayer.position
+            if (currPosition === 7) newPosition = 15
+            else if (currPosition === 22) newPosition = 25
+            else if (currPosition === 36) newPosition = 5
+            await dispatch({ type: 'doSteps', newPosition })
+            copyBoard = JSON.parse(JSON.stringify(state.board))
+            copyBoard.currPLayer.isNextPayByDice = true
+            await boardService.save(copyBoard)
+            commit({ type: 'setBoard', board: copyBoard })
 
             break
           case 'chance-204':
             console.log('chance-204')
-            break
-          case 'chance-205':
-            console.log('chance-20')
 
             break
           case 'chance-206':
