@@ -21,6 +21,10 @@
         <div v-for="card in player.utilitiesCards" :key="card._id">
           {{ card.title }}
         </div>
+        <!-- <p>propertyCards:</p> -->
+        <div v-for="card in player.chanceCards" :key="card._id">
+          {{ card.title }}
+        </div>
         <div class="cards-container">
           <!-- <component
             :is="cmp"

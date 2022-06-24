@@ -117,14 +117,13 @@ export default {
     },
 
     throwDice() {
-      var dice = [
-        utilService.getRandomInt(1, 7),
-        utilService.getRandomInt(1, 7),
-      ]
-      // var dice = [1, 1]
+      // var dice = [
+      //   utilService.getRandomInt(1, 7),
+      //   utilService.getRandomInt(1, 7),
+      // ]
+      var dice = [1, 6]
       this.currDice = dice
       if (this.isNextPayByDice?.isTrue) {
-        console.log(this.currPLayer.isNextPayByDice)
         this.payByDice()
         return
       }
@@ -182,13 +181,14 @@ export default {
     },
     openCommunityModal() {
       const length = this.cards.communityChestCards.length
-      let cardIdx = utilService.getRandomInt(0, length)
-      // let cardIdx = 15
+      // let cardIdx = utilService.getRandomInt(0, length)
+      let cardIdx = 12
       this.currCard = this.cards.communityChestCards[cardIdx]
     },
     openChanceModal() {
       const length = this.cards.chanceCards.length
       let cardIdx = utilService.getRandomInt(0, length)
+      // let cardIdx = 15
       this.currCard = this.cards.chanceCards[cardIdx]
     },
     async doCommunityTask() {

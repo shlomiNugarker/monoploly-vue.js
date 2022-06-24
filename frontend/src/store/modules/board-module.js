@@ -200,45 +200,34 @@ export default {
         const playerIdx = copyBoard.players.findIndex(
           (player) => player._id === playerId
         )
-        const cardIdx = copyBoard.cards.chanceCards.findIndex(
-          (c) => c._id === card._id
-        )
+        // const cardIdx = copyBoard.cards.chanceCards.findIndex(
+        //   (c) => c._id === card._id
+        // )
         let newPosition
         let currPosition
 
         switch (card._id) {
-          case 'chance-201':
+          case 'chance-201': // Advance to "Go". (Collect $200)
             await dispatch({ type: 'doSteps', newPosition: 0 })
-            copyBoard = JSON.parse(JSON.stringify(state.board))
-            copyBoard.players[playerIdx].balance += 200
-            await boardService.save(copyBoard)
-            commit({ type: 'setBoard', board: copyBoard })
-
+            await dispatch({ type: 'collectMoney', playerIdx, amount: 200 })
             break
-          case 'chance-202':
+          case 'chance-202': // Advance to Illinois Ave. {Avenue}. If you pass Go, collect $200.
             console.log('chance-202')
             if (state.board.currPLayer.position > 35) {
-              copyBoard = JSON.parse(JSON.stringify(state.board))
-              copyBoard.players[playerIdx].balance += 200
-              await boardService.save(copyBoard)
-              commit({ type: 'setBoard', board: copyBoard })
+              await dispatch({ type: 'collectMoney', playerIdx, amount: 200 })
             }
             await dispatch({ type: 'doSteps', newPosition: 24 })
 
             break
-          case 'chance-203':
+          case 'chance-203': // Advance to St. Charles Place. If you pass Go, collect $200
             console.log('chance-203')
             if (state.board.currPLayer.position > 35) {
-              copyBoard = JSON.parse(JSON.stringify(state.board))
-              copyBoard.players[playerIdx].balance += 200
-              await boardService.save(copyBoard)
-              commit({ type: 'setBoard', board: copyBoard })
+              await dispatch({ type: 'collectMoney', playerIdx, amount: 200 })
             }
             await dispatch({ type: 'doSteps', newPosition: 11 })
             break
-          case 'chance-204':
+          case 'chance-204': // Advance token to the nearest Utility
             console.log('chance-204')
-
             currPosition = state.board.currPLayer.position
             if (currPosition === 7) newPosition = 12
             else if (currPosition === 22) newPosition = 28
@@ -249,7 +238,7 @@ export default {
             commit({ type: 'setBoard', board: copyBoard })
 
             break
-          case 'chance-205':
+          case 'chance-205': // Advance to the nearest Railroad
             console.log('chance-205')
             currPosition = state.board.currPLayer.position
             if (currPosition === 7) newPosition = 15
@@ -262,35 +251,29 @@ export default {
             commit({ type: 'setBoard', board: copyBoard })
 
             break
-          case 'chance-206':
+          case 'chance-206': // Bank pays you dividend of $50
             console.log('chance-206')
-            copyBoard = JSON.parse(JSON.stringify(state.board))
-            copyBoard.players[playerIdx].balance += 50
-            await boardService.save(copyBoard)
-            commit({ type: 'setBoard', board: copyBoard })
+            await dispatch({ type: 'collectMoney', playerIdx, amount: 50 })
             break
-          case 'chance-207':
+          case 'chance-207': // Get out of Jail Free
             console.log('chance-207')
             copyBoard = JSON.parse(JSON.stringify(state.board))
-
             const cardIdx = copyBoard.cards.chanceCards.findIndex(
               (c) => c._id === card._id
             )
             var cardToSave = copyBoard.cards.chanceCards.splice(cardIdx, 1)
-            console.log(cardToSave)
-
             copyBoard.players[playerIdx].chanceCards.push(...cardToSave)
             await boardService.save(copyBoard)
             commit({ type: 'setBoard', board: copyBoard })
 
             break
-          case 'chance-208':
+          case 'chance-208': // Go Back 3 Spaces
             console.log('chance-208')
             copyBoard = JSON.parse(JSON.stringify(state.board))
             const posBack = copyBoard.currPLayer.position - 3
             await dispatch({ type: 'doSteps', newPosition: posBack })
             break
-          case 'chance-209':
+          case 'chance-209': // Go to Jail
             console.log('chance-209')
             await dispatch({ type: 'doSteps', newPosition: 10 })
             copyBoard = JSON.parse(JSON.stringify(state.board))
@@ -298,21 +281,17 @@ export default {
             await boardService.save(copyBoard)
             commit({ type: 'setBoard', board: copyBoard })
             break
-          case 'chance-210':
+          case 'chance-210': // Make general repairs on all your property
             console.log('chance-210')
             copyBoard = JSON.parse(JSON.stringify(state.board))
             copyBoard.players[playerIdx] /// TODO after add addHomeFunc: PAY FOR HOUSE=25 & HOTEL=100
 
             break
-          case 'chance-211':
-            console.log('chance-211') // POOR TAX -15
-            copyBoard = JSON.parse(JSON.stringify(state.board))
-            copyBoard.players[playerIdx].balance -= 15
-            await boardService.save(copyBoard)
-            commit({ type: 'setBoard', board: copyBoard })
-
+          case 'chance-211': // Pay poor tax of $15
+            console.log('chance-211')
+            await dispatch({ type: 'payMoney', playerIdx, amount: 15 })
             break
-          case 'chance-212':
+          case 'chance-212': // collect $200
             console.log('chance-212')
             copyBoard = JSON.parse(JSON.stringify(state.board))
             if (copyBoard.players[playerIdx].position > 5) {
@@ -323,7 +302,7 @@ export default {
             await dispatch({ type: 'doSteps', newPosition: 5 })
 
             break
-          case 'chance-213':
+          case 'chance-213': // Advance token to Boardwalk
             console.log('chance-213')
             await dispatch({ type: 'doSteps', newPosition: 39 })
             break
@@ -343,17 +322,11 @@ export default {
             break
           case 'chance-215':
             console.log('chance-215') // COLLECT $150
-            copyBoard = JSON.parse(JSON.stringify(state.board))
-            copyBoard.players[playerIdx].balance += 150
-            await boardService.save(copyBoard)
-            commit({ type: 'setBoard', board: copyBoard })
+            await dispatch({ type: 'collectMoney', playerIdx, amount: 150 })
             break
           case 'chance-216':
             console.log('chance-216') // COLLECT $100
-            copyBoard = JSON.parse(JSON.stringify(state.board))
-            copyBoard.players[playerIdx].balance += 100
-            await boardService.save(copyBoard)
-            commit({ type: 'setBoard', board: copyBoard })
+            await dispatch({ type: 'collectMoney', playerIdx, amount: 100 })
             break
           default:
           // some code
@@ -362,17 +335,28 @@ export default {
         console.log('cannot doChanceTask..')
       }
     },
+    async collectMoney({ state, commit }, { playerIdx, amount }) {
+      let copyBoard = JSON.parse(JSON.stringify(state.board))
+      copyBoard.players[playerIdx].balance += amount
+      await boardService.save(copyBoard)
+      commit({ type: 'setBoard', board: copyBoard })
+    },
+    async payMoney({ state, commit }, { playerIdx, amount }) {
+      let copyBoard = JSON.parse(JSON.stringify(state.board))
+      copyBoard.players[playerIdx].balance -= amount
+      await boardService.save(copyBoard)
+      commit({ type: 'setBoard', board: copyBoard })
+    },
     async doCommunityTask({ state, commit, dispatch }, { card }) {
       try {
-        console.log('commumuty module', card)
         let copyBoard = JSON.parse(JSON.stringify(state.board))
         const playerId = copyBoard.currPLayer._id
         const playerIdx = copyBoard.players.findIndex(
           (player) => player._id === playerId
         )
-        const cardIdx = copyBoard.cards.chanceCards.findIndex(
-          (c) => c._id === card._id
-        )
+        // const cardIdx = copyBoard.cards.chanceCards.findIndex(
+        //   (c) => c._id === card._id
+        // )
         let newPosition
         let currPosition
 
@@ -380,17 +364,11 @@ export default {
           case 'community-101': // Advance to "Go". (Collect $200)
             console.log('community-101')
             await dispatch({ type: 'doSteps', newPosition: 0 })
-            copyBoard = JSON.parse(JSON.stringify(state.board))
-            copyBoard.players[playerIdx].balance += 200
-            await boardService.save(copyBoard)
-            commit({ type: 'setBoard', board: copyBoard })
+            await dispatch({ type: 'collectMoney', playerIdx, amount: 200 })
             break
           case 'community-102': // Collect $100
             console.log('community-102')
-            copyBoard = JSON.parse(JSON.stringify(state.board))
-            copyBoard.players[playerIdx].balance += 100
-            await boardService.save(copyBoard)
-            commit({ type: 'setBoard', board: copyBoard })
+            await dispatch({ type: 'collectMoney', playerIdx, amount: 100 })
             break
           case 'community-103': // Get Out of Jail Free
             console.log('community-103')
@@ -407,54 +385,38 @@ export default {
             commit({ type: 'setBoard', board: copyBoard })
             break
           case 'community-104': // Collect $10
-            console.log('community-104')
-            copyBoard = JSON.parse(JSON.stringify(state.board))
-            copyBoard.players[playerIdx].balance += 10
-            await boardService.save(copyBoard)
-            commit({ type: 'setBoard', board: copyBoard })
+            await dispatch({ type: 'collectMoney', playerIdx, amount: 10 })
+
             break
-          case 'community-105': //Collect $200
+          case 'community-105': // Collect $200
             console.log('community-105')
-            copyBoard = JSON.parse(JSON.stringify(state.board))
-            copyBoard.players[playerIdx].balance += 200
-            await boardService.save(copyBoard)
-            commit({ type: 'setBoard', board: copyBoard })
+            await dispatch({ type: 'collectMoney', playerIdx, amount: 200 })
+
             break
           case 'community-106': // get $50
             console.log('community-106')
-            copyBoard = JSON.parse(JSON.stringify(state.board))
-            copyBoard.players[playerIdx].balance += 50
-            await boardService.save(copyBoard)
-            commit({ type: 'setBoard', board: copyBoard })
+            await dispatch({ type: 'collectMoney', playerIdx, amount: 50 })
 
             break
           case 'community-107': // Collect $20
             console.log('community-107')
-            copyBoard = JSON.parse(JSON.stringify(state.board))
-            copyBoard.players[playerIdx].balance += 20
-            await boardService.save(copyBoard)
-            commit({ type: 'setBoard', board: copyBoard })
+            await dispatch({ type: 'collectMoney', playerIdx, amount: 20 })
+
             break
           case 'community-108': // Receive for services $25.
             console.log('community-108')
-            copyBoard = JSON.parse(JSON.stringify(state.board))
-            copyBoard.players[playerIdx].balance += 25
-            await boardService.save(copyBoard)
-            commit({ type: 'setBoard', board: copyBoard })
+            await dispatch({ type: 'collectMoney', playerIdx, amount: 25 })
+
             break
-          case 'community-109': //You inherit $100
+          case 'community-109': // You inherit $100
             console.log('community-109')
-            copyBoard = JSON.parse(JSON.stringify(state.board))
-            copyBoard.players[playerIdx].balance += 100
-            await boardService.save(copyBoard)
-            commit({ type: 'setBoard', board: copyBoard })
+            await dispatch({ type: 'collectMoney', playerIdx, amount: 100 })
+
             break
           case 'community-110': // Collect $100
             console.log('community-110')
-            copyBoard = JSON.parse(JSON.stringify(state.board))
-            copyBoard.players[playerIdx].balance += 100
-            await boardService.save(copyBoard)
-            commit({ type: 'setBoard', board: copyBoard })
+            await dispatch({ type: 'collectMoney', playerIdx, amount: 100 })
+
             break
           case 'community-111': // Collect $50 from every player for opening night seats
             console.log('community-111')
@@ -471,30 +433,24 @@ export default {
             break
           case 'community-112': // Pay $50
             console.log('community-112')
-            copyBoard = JSON.parse(JSON.stringify(state.board))
-            copyBoard.players[playerIdx].balance -= 50
-            await boardService.save(copyBoard)
-            commit({ type: 'setBoard', board: copyBoard })
+            await dispatch({ type: 'payMoney', playerIdx, amount: 50 })
+
             break
           case 'community-113': // Pay hospital $100
             console.log('community-113')
-            copyBoard = JSON.parse(JSON.stringify(state.board))
-            copyBoard.players[playerIdx].balance -= 100
-            await boardService.save(copyBoard)
-            commit({ type: 'setBoard', board: copyBoard })
+            await dispatch({ type: 'payMoney', playerIdx, amount: 100 })
+
             break
           case 'community-114': // Pay school tax of $150
             console.log('community-114')
-            copyBoard = JSON.parse(JSON.stringify(state.board))
-            copyBoard.players[playerIdx].balance -= 150
-            await boardService.save(copyBoard)
-            commit({ type: 'setBoard', board: copyBoard })
+            await dispatch({ type: 'payMoney', playerIdx, amount: 150 })
+
             break
-          case 'community-115': //'You are assessed for street repairs: Pay $40 per house and $115 per hotel you own
+          case 'community-115': // You are assessed for street repairs: Pay $40 per house and $115 per hotel you own
             console.log('community-115')
             // TODO AFTER FINISH ADD-HOME-FUNC
             break
-          case 'community-116': //Go to Jail
+          case 'community-116': // Go to Jail
             console.log('community-116')
             await dispatch({ type: 'doSteps', newPosition: 10 })
             copyBoard = JSON.parse(JSON.stringify(state.board))
