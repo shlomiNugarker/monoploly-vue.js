@@ -11,6 +11,7 @@
       v-if="card.type === 'communityChestCard'"
       :card="card"
       @closeModal="closeModal"
+      @doCommunityTask="doCommunityTask"
     />
 
     <chanceModal
@@ -86,6 +87,9 @@ export default {
     },
     doChanceTask() {
       this.$emit('doChanceTask')
+    },
+    doCommunityTask() {
+      this.$emit('doCommunityTask')
     },
   },
   components: {

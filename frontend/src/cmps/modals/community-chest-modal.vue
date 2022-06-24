@@ -2,7 +2,7 @@
   <section class="community-chest-modal">
     <div class="modal-container">
       <communityChestCard :card="card" />
-      <button @click="closeModal">OK</button>
+      <button @click="doCommunityTask">OK</button>
     </div>
   </section>
 </template>
@@ -30,6 +30,9 @@ export default {
   methods: {
     closeModal() {
       this.$emit('closeModal')
+    },
+    doCommunityTask() {
+      this.$emit('doCommunityTask')
     },
   },
   components: {

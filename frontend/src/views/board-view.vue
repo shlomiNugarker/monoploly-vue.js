@@ -48,6 +48,7 @@
             @buyRailroadCard="buyRailroadCard"
             @buyUtilityCard="buyUtilityCard"
             @doChanceTask="doChanceTask"
+            @doCommunityTask="doCommunityTask"
           />
         </div>
       </div>
@@ -116,14 +117,12 @@ export default {
     },
 
     throwDice() {
-      // var dice = [
-      //   utilService.getRandomInt(1, 7),
-      //   utilService.getRandomInt(1, 7),
-      // ]
-      var dice = [4, 3]
+      var dice = [
+        utilService.getRandomInt(1, 7),
+        utilService.getRandomInt(1, 7),
+      ]
+      // var dice = [1, 1]
       this.currDice = dice
-      // console.log(this.currPLayer.isNextPayByDice)
-
       if (this.isNextPayByDice?.isTrue) {
         console.log(this.currPLayer.isNextPayByDice)
         this.payByDice()
@@ -183,15 +182,25 @@ export default {
     },
     openCommunityModal() {
       const length = this.cards.communityChestCards.length
-
       let cardIdx = utilService.getRandomInt(0, length)
+      // let cardIdx = 15
       this.currCard = this.cards.communityChestCards[cardIdx]
     },
     openChanceModal() {
       const length = this.cards.chanceCards.length
-      // let cardIdx = utilService.getRandomInt(0, length)
-      let cardIdx = 15
+      let cardIdx = utilService.getRandomInt(0, length)
       this.currCard = this.cards.chanceCards[cardIdx]
+    },
+    async doCommunityTask() {
+      console.log('community view')
+      const playerPosBefore = this.currPLayer.position
+      await this.$store.dispatch({
+        type: 'doCommunityTask',
+        card: this.currCard,
+      })
+      this.currCard = {}
+      const playerPosAfter = this.currPLayer.position
+      if (playerPosAfter !== playerPosBefore) this.checkCondition()
     },
     async doChanceTask() {
       const playerPosBefore = this.currPLayer.position

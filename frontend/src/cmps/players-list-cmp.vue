@@ -21,7 +21,7 @@ export default {
   name: 'players-list-cmp',
   data() {
     return {
-      isListOpen: false,
+      isListOpen: true,
     }
   },
   created() {},

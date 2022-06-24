@@ -38,8 +38,6 @@ export default {
     },
     async doSteps({ state, commit, dispatch }, { newPosition }) {
       try {
-        console.log('doSteps', newPosition)
-
         let copyBoard = JSON.parse(JSON.stringify(state.board))
         const currPosition = copyBoard.currPLayer.position
         const playerToStep = copyBoard.currPLayer
@@ -48,7 +46,6 @@ export default {
         )
 
         if (copyBoard.players[playerIdx].isInJail) {
-          console.log('injail')
           copyBoard.players[playerIdx].isInJail--
           await boardService.save(copyBoard)
           commit({ type: 'setBoard', board: copyBoard })
@@ -135,7 +132,6 @@ export default {
           name: copyBoard.currPLayer.name,
           _id: copyBoard.currPLayer._id,
         }
-
         await boardService.save(copyBoard)
         commit({ type: 'setBoard', board: copyBoard })
       } catch (err) {
@@ -161,7 +157,6 @@ export default {
           name: copyBoard.currPLayer.name,
           _id: copyBoard.currPLayer._id,
         }
-
         await boardService.save(copyBoard)
         commit({ type: 'setBoard', board: copyBoard })
       } catch (err) {
@@ -241,7 +236,6 @@ export default {
             }
             await dispatch({ type: 'doSteps', newPosition: 11 })
             break
-
           case 'chance-204':
             console.log('chance-204')
 
@@ -366,6 +360,153 @@ export default {
         }
       } catch (err) {
         console.log('cannot doChanceTask..')
+      }
+    },
+    async doCommunityTask({ state, commit, dispatch }, { card }) {
+      try {
+        console.log('commumuty module', card)
+        let copyBoard = JSON.parse(JSON.stringify(state.board))
+        const playerId = copyBoard.currPLayer._id
+        const playerIdx = copyBoard.players.findIndex(
+          (player) => player._id === playerId
+        )
+        const cardIdx = copyBoard.cards.chanceCards.findIndex(
+          (c) => c._id === card._id
+        )
+        let newPosition
+        let currPosition
+
+        switch (card._id) {
+          case 'community-101': // Advance to "Go". (Collect $200)
+            console.log('community-101')
+            await dispatch({ type: 'doSteps', newPosition: 0 })
+            copyBoard = JSON.parse(JSON.stringify(state.board))
+            copyBoard.players[playerIdx].balance += 200
+            await boardService.save(copyBoard)
+            commit({ type: 'setBoard', board: copyBoard })
+            break
+          case 'community-102': // Collect $100
+            console.log('community-102')
+            copyBoard = JSON.parse(JSON.stringify(state.board))
+            copyBoard.players[playerIdx].balance += 100
+            await boardService.save(copyBoard)
+            commit({ type: 'setBoard', board: copyBoard })
+            break
+          case 'community-103': // Get Out of Jail Free
+            console.log('community-103')
+            copyBoard = JSON.parse(JSON.stringify(state.board))
+            const cardIdx = copyBoard.cards.communityChestCards.findIndex(
+              (c) => c._id === card._id
+            )
+            var cardToSave = copyBoard.cards.communityChestCards.splice(
+              cardIdx,
+              1
+            )
+            copyBoard.players[playerIdx].communityChestCards.push(...cardToSave)
+            await boardService.save(copyBoard)
+            commit({ type: 'setBoard', board: copyBoard })
+            break
+          case 'community-104': // Collect $10
+            console.log('community-104')
+            copyBoard = JSON.parse(JSON.stringify(state.board))
+            copyBoard.players[playerIdx].balance += 10
+            await boardService.save(copyBoard)
+            commit({ type: 'setBoard', board: copyBoard })
+            break
+          case 'community-105': //Collect $200
+            console.log('community-105')
+            copyBoard = JSON.parse(JSON.stringify(state.board))
+            copyBoard.players[playerIdx].balance += 200
+            await boardService.save(copyBoard)
+            commit({ type: 'setBoard', board: copyBoard })
+            break
+          case 'community-106': // get $50
+            console.log('community-106')
+            copyBoard = JSON.parse(JSON.stringify(state.board))
+            copyBoard.players[playerIdx].balance += 50
+            await boardService.save(copyBoard)
+            commit({ type: 'setBoard', board: copyBoard })
+
+            break
+          case 'community-107': // Collect $20
+            console.log('community-107')
+            copyBoard = JSON.parse(JSON.stringify(state.board))
+            copyBoard.players[playerIdx].balance += 20
+            await boardService.save(copyBoard)
+            commit({ type: 'setBoard', board: copyBoard })
+            break
+          case 'community-108': // Receive for services $25.
+            console.log('community-108')
+            copyBoard = JSON.parse(JSON.stringify(state.board))
+            copyBoard.players[playerIdx].balance += 25
+            await boardService.save(copyBoard)
+            commit({ type: 'setBoard', board: copyBoard })
+            break
+          case 'community-109': //You inherit $100
+            console.log('community-109')
+            copyBoard = JSON.parse(JSON.stringify(state.board))
+            copyBoard.players[playerIdx].balance += 100
+            await boardService.save(copyBoard)
+            commit({ type: 'setBoard', board: copyBoard })
+            break
+          case 'community-110': // Collect $100
+            console.log('community-110')
+            copyBoard = JSON.parse(JSON.stringify(state.board))
+            copyBoard.players[playerIdx].balance += 100
+            await boardService.save(copyBoard)
+            commit({ type: 'setBoard', board: copyBoard })
+            break
+          case 'community-111': // Collect $50 from every player for opening night seats
+            console.log('community-111')
+            copyBoard = JSON.parse(JSON.stringify(state.board))
+            const currPlayer = copyBoard.players[playerIdx]
+            copyBoard.players.forEach((player) => {
+              if (player._id !== currPlayer._id) {
+                player.balance -= 50
+                copyBoard.players[playerIdx].balance += 50
+              }
+            })
+            await boardService.save(copyBoard)
+            commit({ type: 'setBoard', board: copyBoard })
+            break
+          case 'community-112': // Pay $50
+            console.log('community-112')
+            copyBoard = JSON.parse(JSON.stringify(state.board))
+            copyBoard.players[playerIdx].balance -= 50
+            await boardService.save(copyBoard)
+            commit({ type: 'setBoard', board: copyBoard })
+            break
+          case 'community-113': // Pay hospital $100
+            console.log('community-113')
+            copyBoard = JSON.parse(JSON.stringify(state.board))
+            copyBoard.players[playerIdx].balance -= 100
+            await boardService.save(copyBoard)
+            commit({ type: 'setBoard', board: copyBoard })
+            break
+          case 'community-114': // Pay school tax of $150
+            console.log('community-114')
+            copyBoard = JSON.parse(JSON.stringify(state.board))
+            copyBoard.players[playerIdx].balance -= 150
+            await boardService.save(copyBoard)
+            commit({ type: 'setBoard', board: copyBoard })
+            break
+          case 'community-115': //'You are assessed for street repairs: Pay $40 per house and $115 per hotel you own
+            console.log('community-115')
+            // TODO AFTER FINISH ADD-HOME-FUNC
+            break
+          case 'community-116': //Go to Jail
+            console.log('community-116')
+            await dispatch({ type: 'doSteps', newPosition: 10 })
+            copyBoard = JSON.parse(JSON.stringify(state.board))
+            copyBoard.players[playerIdx].isInJail = 3
+            await boardService.save(copyBoard)
+            commit({ type: 'setBoard', board: copyBoard })
+            break
+          default:
+          // some code
+        }
+      } catch (err) {
+        console.log('cannot doCommunityTask', err)
       }
     },
   },
