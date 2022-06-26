@@ -93,7 +93,7 @@ function _createBoard(name) {
     hotels: 12,
     currPLayer: {
       _id: 'p100',
-      name: 'player-0',
+      name: 'זוהר',
       position: 0,
       propertyCards: [],
       balance: 2000,
@@ -102,7 +102,7 @@ function _createBoard(name) {
     players: [
       {
         _id: 'p100',
-        name: 'player-0',
+        name: 'זוהר',
         position: 0,
         propertyCards: [],
         railroadsCards: [],
@@ -115,7 +115,7 @@ function _createBoard(name) {
       },
       {
         _id: 'p101',
-        name: 'player-1',
+        name: 'שלומי',
         position: 0,
         propertyCards: [],
         railroadsCards: [],
@@ -516,6 +516,8 @@ function _createBoard(name) {
           hotelCostNotCalc: 50,
           type: 'propertyCard',
           quantity: 2,
+          houses: 0,
+          hotels: 0,
         },
         {
           _id: 'property-102',
@@ -534,6 +536,8 @@ function _createBoard(name) {
           hotelCostNotCalc: 50,
           type: 'propertyCard',
           quantity: 2,
+          houses: 0,
+          hotels: 0,
         },
 
         {
@@ -553,6 +557,8 @@ function _createBoard(name) {
           hotelCostNotCalc: 50,
           type: 'propertyCard',
           quantity: 3,
+          houses: 0,
+          hotels: 0,
         },
         {
           _id: 'property-104',
@@ -571,6 +577,8 @@ function _createBoard(name) {
           hotelCostNotCalc: 50,
           type: 'propertyCard',
           quantity: 3,
+          houses: 0,
+          hotels: 0,
         },
         {
           _id: 'property-105',
@@ -589,6 +597,8 @@ function _createBoard(name) {
           hotelCostNotCalc: 50,
           type: 'propertyCard',
           quantity: 3,
+          houses: 0,
+          hotels: 0,
         },
         {
           _id: 'property-106',
@@ -607,6 +617,8 @@ function _createBoard(name) {
           hotelCostNotCalc: 50,
           type: 'propertyCard',
           quantity: 3,
+          houses: 0,
+          hotels: 0,
         },
         {
           _id: 'property-107',
@@ -625,6 +637,8 @@ function _createBoard(name) {
           hotelCostNotCalc: 50,
           type: 'propertyCard',
           quantity: 3,
+          houses: 0,
+          hotels: 0,
         },
         {
           _id: 'property-108',
@@ -643,6 +657,8 @@ function _createBoard(name) {
           hotelCostNotCalc: 50,
           type: 'propertyCard',
           quantity: 3,
+          houses: 0,
+          hotels: 0,
         },
 
         {
@@ -662,6 +678,8 @@ function _createBoard(name) {
           hotelCostNotCalc: 50,
           type: 'propertyCard',
           quantity: 3,
+          houses: 0,
+          hotels: 0,
         },
         {
           _id: 'property-110',
@@ -680,6 +698,8 @@ function _createBoard(name) {
           hotelCostNotCalc: 50,
           type: 'propertyCard',
           quantity: 3,
+          houses: 0,
+          hotels: 0,
         },
         {
           _id: 'property-111',
@@ -698,6 +718,8 @@ function _createBoard(name) {
           hotelCostNotCalc: 50,
           type: 'propertyCard',
           quantity: 3,
+          houses: 0,
+          hotels: 0,
         },
         {
           _id: 'property-112',
@@ -716,6 +738,8 @@ function _createBoard(name) {
           hotelCostNotCalc: 150,
           type: 'propertyCard',
           quantity: 3,
+          houses: 0,
+          hotels: 0,
         },
         {
           _id: 'property-113',
@@ -734,6 +758,8 @@ function _createBoard(name) {
           hotelCostNotCalc: 150,
           type: 'propertyCard',
           quantity: 3,
+          houses: 0,
+          hotels: 0,
         },
         {
           _id: 'property-114',
@@ -752,6 +778,8 @@ function _createBoard(name) {
           hotelCostNotCalc: 150,
           type: 'propertyCard',
           quantity: 3,
+          houses: 0,
+          hotels: 0,
         },
 
         {
@@ -771,6 +799,8 @@ function _createBoard(name) {
           hotelCostNotCalc: 150,
           type: 'propertyCard',
           quantity: 3,
+          houses: 0,
+          hotels: 0,
         },
         {
           _id: 'property-116',
@@ -789,6 +819,8 @@ function _createBoard(name) {
           hotelCostNotCalc: 150,
           type: 'propertyCard',
           quantity: 3,
+          houses: 0,
+          hotels: 0,
         },
         {
           _id: 'property-117',
@@ -807,6 +839,8 @@ function _createBoard(name) {
           hotelCostNotCalc: 150,
           type: 'propertyCard',
           quantity: 3,
+          houses: 0,
+          hotels: 0,
         },
         {
           _id: 'property-118',
@@ -825,6 +859,8 @@ function _createBoard(name) {
           hotelCostNotCalc: 200,
           type: 'propertyCard',
           quantity: 3,
+          houses: 0,
+          hotels: 0,
         },
         {
           _id: 'property-119',
@@ -843,6 +879,8 @@ function _createBoard(name) {
           hotelCostNotCalc: 200,
           type: 'propertyCard',
           quantity: 3,
+          houses: 0,
+          hotels: 0,
         },
         {
           _id: 'property-120',
@@ -861,6 +899,8 @@ function _createBoard(name) {
           hotelCostNotCalc: 200,
           type: 'propertyCard',
           quantity: 3,
+          houses: 0,
+          hotels: 0,
         },
 
         {
@@ -880,6 +920,8 @@ function _createBoard(name) {
           hotelCostNotCalc: 200,
           type: 'propertyCard',
           quantity: 2,
+          houses: 0,
+          hotels: 0,
         },
         {
           _id: 'property-122',
@@ -898,6 +940,8 @@ function _createBoard(name) {
           hotelCostNotCalc: 200,
           type: 'propertyCard',
           quantity: 2,
+          houses: 0,
+          hotels: 0,
         },
       ],
 

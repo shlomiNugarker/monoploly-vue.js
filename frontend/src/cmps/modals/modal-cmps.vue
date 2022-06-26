@@ -35,6 +35,13 @@
       @closeModal="closeModal"
     />
 
+    <buyHouseModal
+      v-if="card.type === 'buyHouse'"
+      :card="card"
+      @buyHouse="buyHouse"
+      @closeModal="closeModal"
+    />
+
     <msgModal
       v-if="card.type === 'msg'"
       :card="card"
@@ -49,6 +56,7 @@ import communityChestModal from './community-chest-modal.vue'
 import railroadCardModal from './railroad-card-modal.vue'
 import chanceModal from './chance-modal.vue'
 import utilityCardModal from './utility-card-modal.vue'
+import buyHouseModal from './buy-house-modal.vue'
 
 import msgModal from './msg-modal.vue'
 
@@ -81,6 +89,9 @@ export default {
     buyUtilityCard(cardId) {
       this.$emit('buyUtilityCard', cardId)
     },
+    buyHouse(cardId) {
+      this.$emit('buyHouse', cardId)
+    },
 
     closeModal() {
       this.$emit('closeModal')
@@ -99,6 +110,7 @@ export default {
     msgModal,
     railroadCardModal,
     chanceModal,
+    buyHouseModal,
   },
 }
 </script>

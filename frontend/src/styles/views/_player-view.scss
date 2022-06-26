@@ -1,5 +1,5 @@
 .player-view {
-  width: 265px;
+  min-width: 15vw;
   position: fixed;
   display: flex;
   flex-direction: column;
@@ -13,6 +13,16 @@
   border-bottom-left-radius: unset;
   padding: 10px;
   z-index: 10;
+  resize: horizontal;
+  overflow: auto;
+
+  .view-header {
+    position: sticky;
+    left: 0;
+    top: 0;
+    z-index: 200;
+    background-color: lightgray;
+  }
 
   .go-back {
     align-self: end;
@@ -26,6 +36,16 @@
     }
 
     .cards-player {
+      // overflow-x: auto;
+      height: 390px;
+      // overflow-y: auto;
+      min-height: 40vh;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      align-content: flex-start;
     }
   }
 }
