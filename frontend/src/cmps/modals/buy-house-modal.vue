@@ -2,7 +2,10 @@
   <section class="buy-house-modal">
     <div class="modal-container">
       <div class="title">
-        <p>{{ currPLayer.name }}, do you want to buy a house in this city?</p>
+        <p>
+          {{ currPLayer.name }}, do you want to buy a {{ houseHotelStr }} in
+          this city?
+        </p>
         <p>{{ card.houseCost }}$</p>
       </div>
 
@@ -34,6 +37,10 @@ export default {
   computed: {
     currPLayer() {
       return this.$store.getters.currPLayer
+    },
+    houseHotelStr() {
+      if (this.card.houses > 3) return 'hotel'
+      return 'home'
     },
   },
   created() {},

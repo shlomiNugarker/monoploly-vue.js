@@ -9,6 +9,9 @@ export default {
     board(state) {
       return state.board
     },
+    currDice(state) {
+      return state.board.currDice
+    },
     cards(state) {
       return state.board?.cards
     },
@@ -29,6 +32,13 @@ export default {
     },
   },
   actions: {
+    async throwDice({ state, commit }, { dice }) {
+      let copyBoard = JSON.parse(JSON.stringify(state.board))
+      copyBoard.currDice = dice
+      console.log(copyBoard.currDice)
+      await boardService.save(copyBoard)
+      commit({ type: 'setBoard', board: copyBoard })
+    },
     async getBoardById({ state, commit }, { boardId }) {
       try {
         const board = await boardService.getBoardById(boardId)
@@ -85,6 +95,7 @@ export default {
         } else {
           currPLayer = players[0]
         }
+        copyBoard.currDice = null
         copyBoard.currPLayer = currPLayer
 
         await boardService.save(copyBoard)
@@ -182,7 +193,7 @@ export default {
         console.log('cannot pay tax')
       }
     },
-    async payByDice({ state, commit, dispatch }, { amount, payTo }) {
+    async payByDice({ state, commit, dispatch }, { times, payTo }) {
       let copyBoard = JSON.parse(JSON.stringify(state.board))
       const currPlayerIdx = copyBoard.players.findIndex(
         (player) => player._id === copyBoard.currPLayer._id
@@ -190,6 +201,9 @@ export default {
       const plyertoPayIdx = copyBoard.players.findIndex(
         (player) => player._id === payTo._id
       )
+      const amount = (copyBoard.currDice[0] + copyBoard.currDice[1]) * times
+      console.log(amount)
+
       copyBoard.players[currPlayerIdx].balance -= amount
       copyBoard.players[plyertoPayIdx].balance += amount
       copyBoard.currPLayer.isNextPayByDice = {}
@@ -236,7 +250,7 @@ export default {
             else if (currPosition === 22) newPosition = 28
             await dispatch({ type: 'doSteps', newPosition })
             copyBoard = JSON.parse(JSON.stringify(state.board))
-            copyBoard.currPLayer.isNextPayByDice = true
+            copyBoard.currPLayer.isNextPayByDice = { isTrue: true, payTo: null }
             await boardService.save(copyBoard)
             commit({ type: 'setBoard', board: copyBoard })
 
@@ -249,7 +263,9 @@ export default {
             else if (currPosition === 36) newPosition = 5
             await dispatch({ type: 'doSteps', newPosition })
             copyBoard = JSON.parse(JSON.stringify(state.board))
-            copyBoard.currPLayer.isNextPayByDice = true
+            copyBoard.currPLayer.isNextPayByDice = { isTrue: true, payTo: null }
+
+            console.log(copyBoard.currPLayer)
             await boardService.save(copyBoard)
             commit({ type: 'setBoard', board: copyBoard })
 
@@ -335,7 +351,7 @@ export default {
           // some code
         }
       } catch (err) {
-        console.log('cannot doChanceTask..')
+        console.log('cannot doChanceTask..', err)
       }
     },
     async collectMoney({ state, commit }, { playerIdx, amount }) {
@@ -481,7 +497,7 @@ export default {
         (card) => cardId === card._id
       )
       if (copyBoard.players[playerIdx].propertyCards[cardIdx].houses === 5) {
-        console.log('you allready have hotel')
+        console.log('you allready have hotel ')
         return
       } else if (
         copyBoard.players[playerIdx].propertyCards[cardIdx].houses > 4
@@ -493,6 +509,84 @@ export default {
           copyBoard.players[playerIdx].propertyCards[cardIdx].houseCost
       }
       copyBoard.players[playerIdx].propertyCards[cardIdx].houses++
+
+      await boardService.save(copyBoard)
+      commit({ type: 'setBoard', board: copyBoard })
+    },
+    async payRent({ state, commit, dispatch }, { currTile }) {
+      let copyBoard = JSON.parse(JSON.stringify(state.board))
+      const ownerId = currTile.owner._id
+      const ownerIdx = copyBoard.players.findIndex(
+        (player) => player._id === ownerId
+      )
+
+      let playerId = copyBoard.currPLayer._id
+      const playerIdx = copyBoard.players.findIndex(
+        (player) => player._id === playerId
+      )
+      let amountToPay
+      let card
+      console.log(currTile.type)
+      if (currTile.type === 'railroad') {
+        const cardIdx = copyBoard.players[ownerIdx].railroadsCards.findIndex(
+          (card) => {
+            return card.title === currTile.name
+          }
+        )
+        const quantityOfCards =
+          copyBoard.players[ownerIdx].railroadsCards.length
+        card = copyBoard.players[ownerIdx].railroadsCards[cardIdx]
+        console.log(card)
+        if (quantityOfCards === 1) amountToPay = card.rent
+        else if (quantityOfCards === 2) amountToPay = card.ifTwoCards
+        else if (quantityOfCards === 3) amountToPay = card.ifthreeCards
+        else if (quantityOfCards === 4) amountToPay = card.ifFourCards
+      }
+      //
+      else if (currTile.type === 'city') {
+        const cardIdx = copyBoard.players[ownerIdx].propertyCards.findIndex(
+          (card) => {
+            return card.title === currTile.name
+          }
+        )
+        card = copyBoard.players[ownerIdx].propertyCards[cardIdx]
+
+        if (card.houses === 0) amountToPay = card.rent
+        else if (card.houses === 1) amountToPay = card.oneHouse
+        else if (card.houses === 2) amountToPay = card.twoHouses
+        else if (card.houses === 3) amountToPay = card.threeHouses
+        else if (card.houses === 4) amountToPay = card.fourHouses
+      }
+      //
+      else if (currTile.type === 'utility') {
+        const cardIdx = copyBoard.players[ownerIdx].propertyCards.findIndex(
+          (card) => {
+            return card.title === currTile.name
+          }
+        )
+        const quantityOfCards =
+          copyBoard.players[ownerIdx].utilitiesCards.length
+
+        card = copyBoard.players[ownerIdx].utilitiesCards[cardIdx]
+        if (quantityOfCards === 1) {
+          await dispatch({
+            type: 'payByDice',
+            times: 2,
+            payTo: copyBoard.players[ownerIdx],
+          })
+        } else if (quantityOfCards === 2) {
+          await dispatch({
+            type: 'payByDice',
+            times: 10,
+            payTo: copyBoard.players[ownerIdx],
+          })
+        }
+      }
+
+      console.log(card)
+
+      copyBoard.players[playerIdx].balance -= amountToPay
+      copyBoard.players[ownerIdx].balance += amountToPay
 
       await boardService.save(copyBoard)
       commit({ type: 'setBoard', board: copyBoard })

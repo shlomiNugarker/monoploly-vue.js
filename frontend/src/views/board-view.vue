@@ -10,7 +10,6 @@
           :tile="board.tiles[idx]"
           :tileIdx="idx"
         />
-
         <div class="center">
           <div>Turn: {{ currPLayer.name }}</div>
           <p @click="swichToNextPlayer">Pass the dice</p>
@@ -83,7 +82,7 @@ export default {
   data() {
     return {
       turn: null,
-      currDice: null,
+      // currDice: null,
       currCard: {},
       isNextPayByDice: {
         isTrue: false,
@@ -107,32 +106,35 @@ export default {
     playerIdx() {
       return this.$store.getters.playerIdx
     },
+    currDice() {
+      return this.$store.getters.currDice
+    },
   },
   async created() {
     const boardId = 'b101'
     await this.$store.dispatch({ type: 'getBoardById', boardId })
-    // this.openBuyHouseModal('Mediterranean Avenue')
     await this.$store.dispatch({
       type: 'doSteps',
       newPosition: 0,
     })
+    // this.payByDice()
   },
 
   methods: {
     swichToNextPlayer() {
-      this.currDice = null
       this.$store.dispatch({
         type: 'swichToNextPlayer',
       })
     },
 
-    throwDice() {
-      // var dice = [
+    async throwDice() {
+      // const dice = [
       //   utilService.getRandomInt(1, 7),
       //   utilService.getRandomInt(1, 7),
       // ]
-      var dice = [1, 0]
-      this.currDice = dice
+      var dice = [1, 4]
+      // this.currDice = dice
+      await this.$store.dispatch({ type: 'throwDice', dice })
       if (this.isNextPayByDice?.isTrue) {
         this.payByDice()
         return
@@ -140,14 +142,15 @@ export default {
       this.doSteps()
     },
     async payByDice(times = 10) {
-      let amount = (this.currDice[0] + this.currDice[1]) * times
+      // let amount = (this.currDice[0] + this.currDice[1]) * times
       let payTo = this.isNextPayByDice.payTo
 
-      await this.$store.dispatch({ type: 'payByDice', amount, payTo })
+      await this.$store.dispatch({ type: 'payByDice', times, payTo })
       this.isNextPayByDice = {}
     },
 
     async doSteps() {
+      console.log(this.currDice)
       let newPosition =
         this.currPLayer.position + this.currDice[0] + this.currDice[1]
       if (newPosition > 39) newPosition -= 40
@@ -197,8 +200,8 @@ export default {
     },
     openChanceModal() {
       const length = this.cards.chanceCards.length
-      let cardIdx = utilService.getRandomInt(0, length)
-      // let cardIdx = 0
+      // let cardIdx = utilService.getRandomInt(0, length)
+      let cardIdx = 4
       this.currCard = this.cards.chanceCards[cardIdx]
     },
     async doCommunityTask() {
@@ -336,15 +339,31 @@ export default {
         const isCanBuyHome = this.hasAllCities()
         if (isCanBuyHome) this.openBuyHouseModal(currTile.name)
       } else {
-        // NOT FREE..
+        // TILE IS NOT FREE..
         // TODO: ADD PAY RENT FUNC
-        this.$alert('you need to pay rent..')
-        if (this.currPLayer.isNextPayByDice) {
-          this.$alert('Throw dice for pay !')
+        // this.$alert('you need to pay rent..')
+        console.log(this.board.currPLayer)
+        if (this.board.currPLayer.isNextPayByDice?.isTrue) {
           this.isNextPayByDice.isTrue = true //maybe save this on state ??
           this.isNextPayByDice.payTo = currTile.owner
+          this.$alert('Throw dice for pay !')
+        } else if (
+          currTile.type === 'city' ||
+          currTile.type === 'railroad' ||
+          currTile.type === 'utility'
+        ) {
+          this.payRent(currTile)
         }
       }
+    },
+    async payRent(currTile) {
+      console.log(currTile)
+      await this.$store.dispatch({
+        type: 'payRent',
+        currTile,
+      })
+      this.$alert(this.currPLayer.name + 'pay rent to ' + currTile.owner.name)
+      console.log(this.currPLayer.name + 'pay rent to ' + currTile.owner.name)
     },
     openBuyHouseModal(name) {
       const cardIdx = this.board.players[

@@ -47,9 +47,7 @@ export default {
   data() {
     return {}
   },
-  created() {
-    console.log(this.ownerCard)
-  },
+  created() {},
   methods: {},
   computed: {
     board() {
