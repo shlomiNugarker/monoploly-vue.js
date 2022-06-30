@@ -72,7 +72,7 @@ export default {
   },
   methods: {
     closeDetails() {
-      this.$router.push('/board/')
+      this.$router.push('/board/' + this.board._id)
     },
     getPlayer() {
       var id = this.$route.params.playerId

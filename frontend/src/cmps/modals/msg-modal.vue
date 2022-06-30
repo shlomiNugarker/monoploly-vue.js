@@ -2,10 +2,10 @@
   <section class="msg-modal">
     <div class="container">
       <div>
-        <p>{{ card.msg }}</p>
+        <p>{{ msg }}</p>
       </div>
       <div>
-        <button @click="closeModal">Close</button>
+        <button @click="closeModal">Ok</button>
       </div>
     </div>
   </section>
@@ -15,6 +15,7 @@
 export default {
   props: {
     card: Object,
+    msg: String,
   },
   name: 'msg-modal',
   data() {

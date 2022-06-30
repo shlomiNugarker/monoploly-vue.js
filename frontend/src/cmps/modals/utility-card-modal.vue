@@ -2,8 +2,12 @@
   <section class="utility-card-modal">
     <div class="modal-container">
       <div class="title">
-        <p>{{ currPLayer.name }}, do you want to buy this company?</p>
-        <p>{{ card.price }}$</p>
+        <!-- <p>{{ currPLayer.name }}, do you want to buy this company?</p> -->
+        <p>
+          {{ currPLayer.name }}, Would you like to purchase {{ card.title }} for
+          ${{ card.price }}?
+        </p>
+        <!-- <p>{{ card.price }}$</p> -->
       </div>
 
       <div class="body-modal">

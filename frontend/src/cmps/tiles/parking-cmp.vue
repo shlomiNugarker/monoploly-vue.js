@@ -1,5 +1,5 @@
 <template>
-  <section class="parking-cmp">
+  <section class="parking-cmp" title="Parking">
     <div class="containerr">
       <span class="free">Free</span>
       <i class="drawing fa fa-car"></i>

@@ -1,5 +1,5 @@
 <template>
-  <section class="chance-cmp">
+  <section class="chance-cmp" :title="'Chance'">
     <p>chance</p>
     <i class="drawing fa fa-question"></i>
     <div v-if="tile.players.length" class="players">

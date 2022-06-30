@@ -1,7 +1,7 @@
 <template>
   <section class="start-cmp">
     <div class="conainer">
-      <div class="title">
+      <div class="title" :title="tile.name">
         <p>
           {{ tile.name }}
         </p>

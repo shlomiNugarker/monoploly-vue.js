@@ -39,9 +39,10 @@
       <router-view></router-view>
 
       <div>
-        <div class="bg" v-if="currCard.type">
+        <div class="bg" v-if="currCard.type || msg">
           <modal
             :card="currCard"
+            :msg="msg"
             @closePropertyModal="closePropertyModal"
             @buyPropertyCard="buyPropertyCard"
             @closeModal="closeModal"
@@ -81,8 +82,8 @@ export default {
   name: 'board-view',
   data() {
     return {
+      msg: '',
       turn: null,
-      // currDice: null,
       currCard: {},
       isNextPayByDice: {
         isTrue: false,
@@ -111,28 +112,31 @@ export default {
     },
   },
   async created() {
-    const boardId = 'b101'
+    const boardId = this.$route.params.boardId
     await this.$store.dispatch({ type: 'getBoardById', boardId })
-    await this.$store.dispatch({
-      type: 'doSteps',
-      newPosition: 0,
-    })
-    // this.payByDice()
+    // await this.$store.dispatch({
+    //   type: 'doSteps',
+    //   newPosition: 10,
+    // })
   },
 
   methods: {
+    showMsg(msg) {
+      this.msg = msg
+      setTimeout(() => (this.msg = null), 5000)
+    },
     swichToNextPlayer() {
       this.$store.dispatch({
         type: 'swichToNextPlayer',
       })
     },
-
     async throwDice() {
+      if (this.currDice) return
       // const dice = [
       //   utilService.getRandomInt(1, 7),
       //   utilService.getRandomInt(1, 7),
       // ]
-      var dice = [1, 4]
+      var dice = [6, 6]
       // this.currDice = dice
       await this.$store.dispatch({ type: 'throwDice', dice })
       if (this.isNextPayByDice?.isTrue) {
@@ -142,13 +146,11 @@ export default {
       this.doSteps()
     },
     async payByDice(times = 10) {
-      // let amount = (this.currDice[0] + this.currDice[1]) * times
       let payTo = this.isNextPayByDice.payTo
 
       await this.$store.dispatch({ type: 'payByDice', times, payTo })
       this.isNextPayByDice = {}
     },
-
     async doSteps() {
       console.log(this.currDice)
       let newPosition =
@@ -161,7 +163,6 @@ export default {
       })
       this.checkCondition()
     },
-
     async buyPropertyCard(cardId) {
       await this.$store.dispatch({
         type: 'buyPropertyCard',
@@ -170,7 +171,6 @@ export default {
       this.currCard = {}
       // this.swichToNextPlayer()
     },
-
     async buyRailroadCard(cardId) {
       await this.$store.dispatch({
         type: 'buyRailroadCard',
@@ -187,7 +187,6 @@ export default {
       this.currCard = {}
       // this.swichToNextPlayer()
     },
-
     closePropertyModal() {
       this.currCard = {}
       // this.swichToNextPlayer()
@@ -195,13 +194,13 @@ export default {
     openCommunityModal() {
       const length = this.cards.communityChestCards.length
       let cardIdx = utilService.getRandomInt(0, length)
-      // let cardIdx = 15
+      // let cardIdx = 13
       this.currCard = this.cards.communityChestCards[cardIdx]
     },
     openChanceModal() {
       const length = this.cards.chanceCards.length
-      // let cardIdx = utilService.getRandomInt(0, length)
-      let cardIdx = 4
+      let cardIdx = utilService.getRandomInt(0, length)
+      // let cardIdx = 0
       this.currCard = this.cards.chanceCards[cardIdx]
     },
     async doCommunityTask() {
@@ -226,9 +225,10 @@ export default {
       if (playerPosAfter !== playerPosBefore) this.checkCondition()
     },
     openRailroadModal(name) {
-      const cardIdx = this.cards.railroadsCards.findIndex(
-        (card) => card.name === name
-      )
+      const cardIdx = this.cards.railroadsCards.findIndex((card) => {
+        console.log(card.title + '===' + name)
+        return card.title === name
+      })
       this.currCard = this.cards.railroadsCards[cardIdx]
     },
     openUtilityModal(name) {
@@ -236,7 +236,6 @@ export default {
         (card) => card.name === name
       )
       this.currCard = this.cards.utilitiesCards[cardIdx]
-      console.log(this.currCard)
     },
     openPropertyModal(name) {
       const cardIdx = this.cards.propertyCards.findIndex(
@@ -246,7 +245,7 @@ export default {
     },
     closeModal() {
       this.currCard = {}
-      // this.swichToNextPlayer()
+      this.msg = ''
     },
     async payTax(taxType) {
       let pay
@@ -255,20 +254,13 @@ export default {
       else if (taxType === 'Water  Works') pay = 100
       const msg = `${taxType}, pay ${pay}$`
 
-      this.currCard = {
-        type: 'msg',
-        msg,
-      }
+      this.msg = msg
       await this.$store.dispatch({
         type: 'payTax',
         pay,
       })
     },
     async collectMoney() {
-      // const playerId = this.board.currPLayer._id
-      // const playerIdx = this.board.players.findIndex(
-      //   (player) => player._id === playerId
-      // )
       await this.$store.dispatch({
         type: 'collectMoney',
         playerIdx: this.playerIdx,
@@ -276,10 +268,6 @@ export default {
       })
     },
     async goToJail() {
-      // const playerId = this.board.currPLayer._id
-      // const playerIdx = this.board.players.findIndex(
-      //   (player) => player._id === playerId
-      // )
       await this.$store.dispatch({
         type: 'goToJail',
         playerIdx: this.playerIdx,
@@ -287,16 +275,12 @@ export default {
     },
     checkCondition() {
       let currTile = this.board.tiles[this.currPLayer.position]
-      // const playerId = this.board.currPLayer._id
-      // const playerIdx = this.board.players.findIndex(
-      //   (player) => player._id === playerId
-      // )
       if (!currTile.owner || !Object.keys(currTile.owner).length) {
         // FREE TILE..
         switch (currTile.type) {
           case 'go':
             console.log('go / swich')
-            this.collectMoney()
+            // this.collectMoney()
             break
           case 'city':
             console.log('city / swich')
@@ -314,7 +298,7 @@ export default {
             break
           case 'railroad':
             console.log('Railroad / swich')
-            this.openRailroadModal()
+            this.openRailroadModal(currTile.name)
             break
           case 'utility':
             console.log('utility / swich')
@@ -340,30 +324,35 @@ export default {
         if (isCanBuyHome) this.openBuyHouseModal(currTile.name)
       } else {
         // TILE IS NOT FREE..
-        // TODO: ADD PAY RENT FUNC
-        // this.$alert('you need to pay rent..')
-        console.log(this.board.currPLayer)
         if (this.board.currPLayer.isNextPayByDice?.isTrue) {
           this.isNextPayByDice.isTrue = true //maybe save this on state ??
           this.isNextPayByDice.payTo = currTile.owner
-          this.$alert('Throw dice for pay !')
+          // this.$alert('Throw dice for pay !')
+          this.msg('Throw dice for pay !')
         } else if (
           currTile.type === 'city' ||
           currTile.type === 'railroad' ||
           currTile.type === 'utility'
         ) {
+          console.log('payRent')
           this.payRent(currTile)
         }
       }
     },
     async payRent(currTile) {
-      console.log(currTile)
-      await this.$store.dispatch({
+      const amount = await this.$store.dispatch({
         type: 'payRent',
         currTile,
       })
-      this.$alert(this.currPLayer.name + 'pay rent to ' + currTile.owner.name)
-      console.log(this.currPLayer.name + 'pay rent to ' + currTile.owner.name)
+      console.log(amount)
+      const msg =
+        this.currPLayer.name +
+        ' pay ' +
+        '$' +
+        amount +
+        ' rent to ' +
+        currTile.owner.name
+      this.showMsg(msg)
     },
     openBuyHouseModal(name) {
       const cardIdx = this.board.players[
@@ -375,7 +364,6 @@ export default {
       this.currCard.type = 'buyHouse'
     },
     async buyHouse(cardId) {
-      // let currTile = this.board.tiles[this.currPLayer.position]
       await this.$store.dispatch({
         type: 'buyHouse',
         cardId,
@@ -398,6 +386,14 @@ export default {
           (card) => card.color === currCard.color
         ) || ''
       return cardsInCity.length === currCard.quantity
+    },
+  },
+  watch: {
+    '$route.params.boardId'() {
+      const boardId = this.$route.params.boardId
+      console.log(boardId)
+      if (!boardId) return
+      this.$store.dispatch({ type: 'getBoardById', boardId })
     },
   },
   components: {

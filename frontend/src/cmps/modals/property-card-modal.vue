@@ -2,8 +2,12 @@
   <section class="property-modal">
     <div class="modal-container">
       <div class="title">
-        <p>{{ currPLayer.name }}, do you want to buy this city?</p>
-        <p>{{ card.price }}$</p>
+        <!-- <p>{{ currPLayer.name }}, do you want to buy this city?</p> -->
+        <p>
+          {{ currPLayer.name }}, Would you like to purchase {{ card.title }} for
+          ${{ card.price }}?
+        </p>
+        <!-- <p>{{ card.price }}$</p> -->
       </div>
 
       <div class="body-modal">
@@ -12,8 +16,8 @@
         </div>
 
         <div class="btns-container">
-          <button @click="buyPropertyCard(card._id)">Yes</button>
-          <button @click="closePropertyModal">No</button>
+          <button @click="buyPropertyCard(card._id)">Purchase</button>
+          <button @click="closePropertyModal">Cancel</button>
         </div>
       </div>
     </div>

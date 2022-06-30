@@ -1,5 +1,5 @@
 <template>
-  <section class="electric-cmp">
+  <section class="electric-cmp" :title="'Electric-company'">
     <div>
       <p>Electric company</p>
       <font-awesome-icon class="electric-logo" icon="bolt-lightning" />

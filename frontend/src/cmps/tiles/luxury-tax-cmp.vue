@@ -1,5 +1,5 @@
 <template>
-  <section class="luxury-tax-cmp">
+  <section class="luxury-tax-cmp" :title="'Luxury-tax'">
     <div class="containerr">
       <span class="luxury">Luxury</span>
       <span class="tax">Tax</span>

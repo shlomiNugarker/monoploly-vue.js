@@ -1,5 +1,5 @@
 <template>
-  <section class="jail-cmp">
+  <section class="jail-cmp" title="Jail / just visit">
     <span class="just">Just</span>
     <span class="visiting">Visiting</span>
     <div class="in-jail">

@@ -1,5 +1,5 @@
 <template>
-  <section class="railroad-cmp">
+  <section class="railroad-cmp" :title="tile.name">
     <div class="tz">
       <p>{{ tile.name }}</p>
       <i class="drawing fa fa-subway"></i>

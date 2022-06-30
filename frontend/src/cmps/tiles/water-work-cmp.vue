@@ -1,6 +1,6 @@
 <template>
   <section class="water-work-cmp">
-    <div class="containerr">
+    <div class="containerr" :title="'Waterworks'">
       <span class="waterwoks"> Waterworks </span>
       <i class="drawing fa fa-tint"></i>
     </div>

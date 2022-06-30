@@ -1,5 +1,5 @@
 <template>
-  <section class="income-cmp">
+  <section class="income-cmp" :title="'Income-tax'">
     <p>Income tax</p>
     <p>PAY 10%</p>
     <p>OR $200</p>

@@ -1,6 +1,6 @@
 <template>
   <section class="tile-cmp">
-    <div class="conainer">
+    <div class="conainer" :title="tile.name">
       <div>
         <div
           class="color-bar"
@@ -27,7 +27,6 @@
           </div>
           <div class="hotel" v-if="ownerCard.houses > 4">
             <font-awesome-icon class="hotel" icon="hotel" />
-            <!-- <span class="hotel-num">{{ ownerCard.hotels }}</span> -->
           </div>
         </div>
       </div>

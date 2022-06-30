@@ -1,5 +1,5 @@
 <template>
-  <section class="send-to-jail-cmp">
+  <section class="send-to-jail-cmp" title="Go to jail">
     <div class="containerr">
       <span>Go to</span>
       <i class="drawing fa fa-gavel"></i>

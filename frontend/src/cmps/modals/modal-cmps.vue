@@ -42,11 +42,7 @@
       @closeModal="closeModal"
     />
 
-    <msgModal
-      v-if="card.type === 'msg'"
-      :card="card"
-      @closeModal="closeModal"
-    />
+    <msgModal v-if="msg" :msg="msg" @closeModal="closeModal" />
   </section>
 </template>
 
@@ -65,6 +61,7 @@ import msgModal from './msg-modal.vue'
 export default {
   props: {
     card: Object,
+    msg: String,
   },
   name: 'modals',
   data() {

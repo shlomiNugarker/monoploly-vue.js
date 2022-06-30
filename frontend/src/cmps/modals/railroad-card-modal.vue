@@ -41,6 +41,7 @@ export default {
       this.$emit('closeModal')
     },
     buyRailroadCard(cardId) {
+      console.log(this.card)
       this.$emit('buyRailroadCard', cardId)
     },
   },
