@@ -40,7 +40,7 @@ export default {
     },
     houseHotelStr() {
       if (this.card.houses > 3) return 'hotel'
-      return 'home'
+      return 'house'
     },
   },
   created() {},

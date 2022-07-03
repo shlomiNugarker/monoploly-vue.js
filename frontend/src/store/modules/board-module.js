@@ -10,6 +10,9 @@ export default {
     board(state) {
       return state.board
     },
+    doubleCount(state) {
+      return state.board.doubleCount
+    },
     currDice(state) {
       return state.board.currDice
     },
@@ -32,24 +35,25 @@ export default {
       state.board = board
     },
     async doSteps(state, { newPosition }) {},
+    doubleCount(state) {
+      state.doubleCount++
+    },
   },
   actions: {
-    async getNewBoard({ state, commit }, { players }) {
-      console.log('getNewBoard')
-      console.log('players', players)
+    async getNewBoard({ state, commit, dispatch }, { players }) {
       const board = await boardService.getNewBoard(players)
       const addedBoard = await boardService.save(board)
-      console.log(addedBoard)
       commit({ type: 'setBoard', board: addedBoard })
       return addedBoard
     },
-    async throwDice({ state, commit }, { dice }) {
+    async throwDice({ state, commit, dispatch, getters }, { dice }) {
       let copyBoard = JSON.parse(JSON.stringify(state.board))
+      copyBoard = JSON.parse(JSON.stringify(state.board))
       copyBoard.currDice = dice
       await boardService.save(copyBoard)
       commit({ type: 'setBoard', board: copyBoard })
     },
-    async getBoardById({ state, commit }, { boardId }) {
+    async getBoardById({ state, commit, getters }, { boardId }) {
       try {
         const board = await boardService.getBoardById(boardId)
         commit({
@@ -60,31 +64,39 @@ export default {
         console.log('cannot get board..')
       }
     },
-    async doSteps({ state, commit, dispatch }, { newPosition }) {
+    async doSteps({ state, commit, dispatch, getters }, { newPosition }) {
       try {
         let copyBoard = JSON.parse(JSON.stringify(state.board))
         let currPosition = copyBoard.currPLayer.position
         let playerToStep = copyBoard.currPLayer
-        let playerIdx = copyBoard.players.findIndex(
-          (player) => player._id === playerToStep._id
-        )
+        let playerIdx = getters.playerIdx
+        const isInJail = copyBoard.players[playerIdx].isInJail
+        let isDouble
+        if (getters.currDice?.length) {
+          isDouble = getters.currDice[0] === getters.currDice[1]
+        }
 
-        if (copyBoard.players[playerIdx].isInJail) {
+        if (isInJail) {
           copyBoard.players[playerIdx].isInJail--
           await boardService.save(copyBoard)
           commit({ type: 'setBoard', board: copyBoard })
+          if (isDouble) {
+            await dispatch({ type: 'getOutOfJail' })
+            await dispatch({ type: 'doSteps', newPosition })
+          }
           return
         }
 
-        // if (newPosition >= 0 && currPosition > newPosition) {
-        //   await dispatch({ type: 'collectMoney', playerIdx, amount: 200 })
-        //   copyBoard = JSON.parse(JSON.stringify(state.board))
-        //   currPosition = copyBoard.currPLayer.position
-        //   playerToStep = copyBoard.currPLayer
-        //   playerIdx = copyBoard.players.findIndex(
-        //     (player) => player._id === playerToStep._id
-        //   )
-        // }
+        if (isDouble) copyBoard.doubleCount++
+        if (newPosition >= 0 && currPosition > newPosition) {
+          await dispatch({ type: 'collectMoney', playerIdx, amount: 200 })
+          copyBoard = JSON.parse(JSON.stringify(state.board))
+          currPosition = copyBoard.currPLayer.position
+          playerToStep = copyBoard.currPLayer
+          playerIdx = copyBoard.players.findIndex(
+            (player) => player._id === playerToStep._id
+          )
+        }
 
         // Remove player from last pos:
         copyBoard.tiles[currPosition].players = copyBoard.tiles[
@@ -99,65 +111,68 @@ export default {
 
         await boardService.save(copyBoard)
         commit({ type: 'setBoard', board: copyBoard })
-        // commit({ type: 'doSteps', newPosition })
       } catch (err) {
         console.log('cannot do steps..', err)
       }
     },
-    async swichToNextPlayer({ state, commit }) {
+    async getOutOfJail({ state, commit, dispatch, getters }) {
+      console.log('get out of jail')
+      await dispatch({ type: 'doSteps', newPosition: 10 })
+      let copyBoard = JSON.parse(JSON.stringify(state.board))
+      let playerIdx = getters.playerIdx
+      copyBoard.doubleCount = 0
+      copyBoard.players[playerIdx].isInJail = 0
+      await boardService.save(copyBoard)
+      commit({ type: 'setBoard', board: copyBoard })
+    },
+    async swichToNextPlayer({ state, commit, getters }) {
       try {
         let copyBoard = JSON.parse(JSON.stringify(state.board))
         const players = copyBoard.players
         let currPLayer = copyBoard.currPLayer
-        const idx = players.findIndex((player) => player._id === currPLayer._id)
+        let playerIdx = getters.playerIdx
+        const isNextPlayerNotLast = playerIdx + 1 < players.length
 
-        if (idx + 1 < players.length) {
-          currPLayer = players[idx + 1]
+        if (isNextPlayerNotLast) {
+          currPLayer = players[playerIdx + 1]
         } else {
           currPLayer = players[0]
         }
+        copyBoard.doubleCount = 0
         copyBoard.currDice = null
         copyBoard.currPLayer = currPLayer
-
         await boardService.save(copyBoard)
         commit({ type: 'setBoard', board: copyBoard })
       } catch (err) {
         console.log('cannot swich players..', err)
       }
     },
-    async buyPropertyCard({ state, commit }, { cardId }) {
+    async buyPropertyCard({ state, commit, getters }, { cardId }) {
       try {
         let copyBoard = JSON.parse(JSON.stringify(state.board))
-        let playerId = copyBoard.currPLayer._id
-        const position = state.board.currPLayer.position
-        const playerIdx = copyBoard.players.findIndex(
-          (player) => player._id === playerId
-        )
+        const playerPos = state.board.currPLayer.position
+        const playerIdx = getters.playerIdx
         const cardIdx = copyBoard.cards.propertyCards.findIndex(
           (card) => card._id === cardId
         )
         var cardToBuy = copyBoard.cards.propertyCards.splice(cardIdx, 1)
         copyBoard.players[playerIdx].balance -= cardToBuy[0].price
         copyBoard.players[playerIdx].propertyCards.push(...cardToBuy)
-        copyBoard.tiles[position].owner = {
+        copyBoard.tiles[playerPos].owner = {
           name: copyBoard.currPLayer.name,
           _id: copyBoard.currPLayer._id,
         }
-
         await boardService.save(copyBoard)
         commit({ type: 'setBoard', board: copyBoard })
       } catch (err) {
         console.log('cannot buy property card..', err)
       }
     },
-    async buyRailroadCard({ state, commit }, { cardId }) {
+    async buyRailroadCard({ state, commit, getters }, { cardId }) {
       try {
         let copyBoard = JSON.parse(JSON.stringify(state.board))
-        let playerId = copyBoard.currPLayer._id
         const position = state.board.currPLayer.position
-        const playerIdx = copyBoard.players.findIndex(
-          (player) => player._id === playerId
-        )
+        const playerIdx = getters.playerIdx
         const cardIdx = copyBoard.cards.railroadsCards.findIndex(
           (card) => card._id === cardId
         )
@@ -174,22 +189,18 @@ export default {
         console.log('cannot buy railroad card..')
       }
     },
-    async buyUtilityCard({ state, commit }, { cardId }) {
+    async buyUtilityCard({ state, commit, getters }, { cardId }) {
       try {
         let copyBoard = JSON.parse(JSON.stringify(state.board))
-        let playerId = copyBoard.currPLayer._id
-        const position = state.board.currPLayer.position
-        const playerIdx = copyBoard.players.findIndex(
-          (player) => player._id === playerId
-        )
+        const playerPos = state.board.currPLayer.position
+        const playerIdx = getters.playerIdx
         const cardIdx = copyBoard.cards.utilitiesCards.findIndex(
           (card) => card._id === cardId
         )
         var cardToBuy = copyBoard.cards.utilitiesCards.splice(cardIdx, 1)
-
         copyBoard.players[playerIdx].balance -= cardToBuy[0].price
         copyBoard.players[playerIdx].utilitiesCards.push(...cardToBuy)
-        copyBoard.tiles[position].owner = {
+        copyBoard.tiles[playerPos].owner = {
           name: copyBoard.currPLayer.name,
           _id: copyBoard.currPLayer._id,
         }
@@ -199,22 +210,18 @@ export default {
         console.log('cannot buy utilitiesCards..', err)
       }
     },
-    async payTax({ state, commit }, { pay }) {
+    async payTax({ state, commit, getters }, { pay }) {
       try {
         let copyBoard = JSON.parse(JSON.stringify(state.board))
-        let playerId = copyBoard.currPLayer._id
-        const playerIdx = copyBoard.players.findIndex(
-          (player) => player._id === playerId
-        )
+        const playerIdx = getters.playerIdx
         copyBoard.players[playerIdx].balance -= pay
-        console.log(copyBoard.players[playerIdx].balance)
         await boardService.save(copyBoard)
         commit({ type: 'setBoard', board: copyBoard })
       } catch (err) {
         console.log('cannot pay tax', err)
       }
     },
-    async payByDice({ state, commit, dispatch }, { times, payTo }) {
+    async payByDice({ state, commit, getters }, { times, payTo }) {
       let copyBoard = JSON.parse(JSON.stringify(state.board))
       const currPlayerIdx = copyBoard.players.findIndex(
         (player) => player._id === copyBoard.currPLayer._id
@@ -230,13 +237,10 @@ export default {
       commit({ type: 'setBoard', board: copyBoard })
       return amount
     },
-    async doChanceTask({ state, commit, dispatch }, { card }) {
+    async doChanceTask({ state, commit, dispatch, getters }, { card }) {
       try {
         let copyBoard = JSON.parse(JSON.stringify(state.board))
-        const playerId = copyBoard.currPLayer._id
-        const playerIdx = copyBoard.players.findIndex(
-          (player) => player._id === playerId
-        )
+        const playerIdx = getters.playerIdx
         let newPosition
         let currPosition
 
@@ -250,7 +254,6 @@ export default {
             //   await dispatch({ type: 'collectMoney', playerIdx, amount: 200 })
             // }
             await dispatch({ type: 'doSteps', newPosition: 24 })
-
             break
           case 'chance-203': // Advance to St. Charles Place. If you pass Go, collect $200
             console.log('chance-203')
@@ -266,7 +269,7 @@ export default {
             else if (currPosition === 22) newPosition = 28
             await dispatch({ type: 'doSteps', newPosition })
             copyBoard = JSON.parse(JSON.stringify(state.board))
-            copyBoard.currPLayer.isNextPayByDice = { isTrue: true, payTo: null }
+            copyBoard.currPLayer.isNextPayByDice = { isTrue: true, payTo: null } ////---------------------------------------- TO DO SOMETHING WITH PAYTO...! -----------------------------------
             await boardService.save(copyBoard)
             commit({ type: 'setBoard', board: copyBoard })
 
@@ -282,7 +285,6 @@ export default {
             copyBoard.currPLayer.isNextPayByDice = { isTrue: true, payTo: null }
             await boardService.save(copyBoard)
             commit({ type: 'setBoard', board: copyBoard })
-
             break
           case 'chance-206': // Bank pays you dividend of $50
             console.log('chance-206')
@@ -308,11 +310,7 @@ export default {
             break
           case 'chance-209': // Go to Jail
             console.log('chance-209')
-            await dispatch({ type: 'doSteps', newPosition: 10 })
-            copyBoard = JSON.parse(JSON.stringify(state.board))
-            copyBoard.players[playerIdx].isInJail = 3
-            await boardService.save(copyBoard)
-            commit({ type: 'setBoard', board: copyBoard })
+            await dispatch({ type: 'goToJail', playerIdx })
             break
           case 'chance-210': // Make general repairs on all your property
             console.log('chance-210')
@@ -320,7 +318,6 @@ export default {
             let homeCount = 0
             let hotelCount = 0
             copyBoard.players[playerIdx].propertyCards.forEach((card) => {
-              console.log(card)
               if (card.houses > 4) hotelCount++
               if (card.houses < 5) homeCount += card.houses
             })
@@ -337,7 +334,8 @@ export default {
           case 'chance-212': // collect $200
             console.log('chance-212')
             copyBoard = JSON.parse(JSON.stringify(state.board))
-            if (copyBoard.players[playerIdx].position > 5) {
+            const playerPos = copyBoard.players[playerIdx].position
+            if (playerPos > 5) {
               copyBoard.players[playerIdx].balance += 200
             }
             await boardService.save(copyBoard)
@@ -393,6 +391,9 @@ export default {
       try {
         await dispatch({ type: 'doSteps', newPosition: 10 })
         let copyBoard = JSON.parse(JSON.stringify(state.board))
+        copyBoard.currDice = null
+        copyBoard.doubleCount = 0
+        copyBoard.isDubble = 0
         copyBoard.players[playerIdx].isInJail = 3
         await boardService.save(copyBoard)
         commit({ type: 'setBoard', board: copyBoard })
@@ -407,11 +408,6 @@ export default {
         const playerIdx = copyBoard.players.findIndex(
           (player) => player._id === playerId
         )
-        // const cardIdx = copyBoard.cards.chanceCards.findIndex(
-        //   (c) => c._id === card._id
-        // )
-        let newPosition
-        let currPosition
 
         switch (card._id) {
           case 'community-101': // Advance to "Go". (Collect $200)
@@ -514,25 +510,20 @@ export default {
       }
     },
     async buyHouse({ state, commit, dispatch }, { cardId, playerIdx }) {
-      console.log(cardId, playerIdx)
       let copyBoard = JSON.parse(JSON.stringify(state.board))
       const cardIdx = copyBoard.players[playerIdx].propertyCards.findIndex(
         (card) => cardId === card._id
       )
-      if (copyBoard.players[playerIdx].propertyCards[cardIdx].houses === 5) {
+      const cardPlayer = copyBoard.players[playerIdx].propertyCards[cardIdx]
+      if (cardPlayer.houses === 5) {
         console.log('you allready have hotel ')
         return
-      } else if (
-        copyBoard.players[playerIdx].propertyCards[cardIdx].houses > 4
-      ) {
-        copyBoard.players[playerIdx].balance -=
-          copyBoard.players[playerIdx].propertyCards[cardIdx].hotelCost
+      } else if (cardPlayer.houses > 4) {
+        copyBoard.players[playerIdx].balance -= cardPlayer.hotelCost
       } else {
-        copyBoard.players[playerIdx].balance -=
-          copyBoard.players[playerIdx].propertyCards[cardIdx].houseCost
+        copyBoard.players[playerIdx].balance -= cardPlayer.houseCost
       }
-      copyBoard.players[playerIdx].propertyCards[cardIdx].houses++
-
+      cardPlayer.houses++
       await boardService.save(copyBoard)
       commit({ type: 'setBoard', board: copyBoard })
     },
@@ -542,7 +533,6 @@ export default {
       const ownerIdx = copyBoard.players.findIndex(
         (player) => player._id === ownerId
       )
-
       let playerId = copyBoard.currPLayer._id
       const playerIdx = copyBoard.players.findIndex(
         (player) => player._id === playerId
@@ -553,15 +543,13 @@ export default {
       if (currTile.type === 'railroad') {
         const cardIdx = copyBoard.players[ownerIdx].railroadsCards.findIndex(
           (card) => {
-            console.log(card.title, '===', currTile.name)
             return card.title === currTile.name
           }
         )
-        console.log(cardIdx)
         const quantityOfCards =
           copyBoard.players[ownerIdx].railroadsCards.length
         card = copyBoard.players[ownerIdx].railroadsCards[cardIdx]
-        console.log(card)
+
         if (quantityOfCards === 1) amountToPay = card.rent
         else if (quantityOfCards === 2) amountToPay = card.ifTwoCards
         else if (quantityOfCards === 3) amountToPay = card.ifthreeCards

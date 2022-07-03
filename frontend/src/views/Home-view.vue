@@ -61,7 +61,6 @@ export default {
       this.name = ' '
     },
     startGame() {
-      console.log('start game')
       this.getNewBoard()
     },
     async getNewBoard() {
@@ -69,7 +68,6 @@ export default {
         type: 'getNewBoard',
         players: JSON.parse(JSON.stringify(this.playersToAdd)),
       })
-      console.log(board)
       this.$router.push('/board/' + board._id)
     },
   },

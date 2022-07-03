@@ -3,7 +3,8 @@
   top: 50%;
   transform: translate(0, -50%);
   right: 0;
-  background-color: lightgoldenrodyellow;
+  background-color: #9bc1a1;
+  border: 1px solid;
   padding: 5px;
   border-radius: 5px;
   min-height: 200px;
@@ -15,6 +16,7 @@
   align-items: center;
   transition: right 0.3s;
   z-index: 10;
+  box-shadow: -1px 1px 24px 3px rgba(0, 0, 0, 0.75);
 
   &.list-close {
     transition: right 0.3s;
@@ -23,12 +25,13 @@
   }
 
   .toggle-list-btn {
+    border: 1px solid;
     position: absolute;
     left: -28px;
     height: 90px;
     border-radius: 5px;
     padding: 10px;
-    border: none;
+    // border: none;
     cursor: pointer;
   }
 }

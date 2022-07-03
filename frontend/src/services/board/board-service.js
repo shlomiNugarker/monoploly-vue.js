@@ -76,6 +76,7 @@ function getNewBoard(players) {
     ],
     houses: 32,
     hotels: 12,
+    doubleCount: 0,
     currPLayer: players[0] || null,
     players,
     tiles: [

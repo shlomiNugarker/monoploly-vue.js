@@ -36,7 +36,7 @@
 
       <playersListCmp :players="board.players" />
 
-      <router-view></router-view>
+      <updateMsgModal :updates="updates" v-if="updates.length" />
 
       <div>
         <div class="bg" v-if="currCard.type || msg">
@@ -54,6 +54,7 @@
           />
         </div>
       </div>
+      <router-view></router-view>
     </section>
   </section>
 </template>
@@ -77,11 +78,13 @@ import utilityCard from '../cmps/cards/utility-card.vue'
 import readingRailroadCard from '../cmps/cards/reading-railroad-card.vue'
 import playersListCmp from '../cmps/players-list-cmp.vue'
 import modal from '../cmps/modals/modal-cmps.vue'
+import updateMsgModal from '../cmps/modals/update-msg-modal.vue'
 import { utilService } from '../services/util.service'
 export default {
   name: 'board-view',
   data() {
     return {
+      updates: [],
       msg: '',
       turn: null,
       currCard: {},
@@ -110,49 +113,80 @@ export default {
     currDice() {
       return this.$store.getters.currDice
     },
+    doubleCount() {
+      return this.$store.getters.doubleCount
+    },
   },
   async created() {
     const boardId = this.$route.params.boardId
     await this.$store.dispatch({ type: 'getBoardById', boardId })
     // await this.$store.dispatch({
     //   type: 'doSteps',
-    //   newPosition: 10,
+    //   newPosition: 0,
     // })
+    const updateMsg = `${this.currPLayer.name} is playing now`
+    this.showUpdate(updateMsg)
   },
 
   methods: {
-    showMsg(msg) {
-      this.msg = msg
-      setTimeout(() => (this.msg = null), 5000)
+    showUpdate(update, delay = 7000) {
+      this.updates.push(update)
+      setTimeout(() => this.updates.shift(), delay)
     },
-    swichToNextPlayer() {
-      this.$store.dispatch({
+    showMsg(msg, delay = 7000) {
+      this.msg = msg
+      setTimeout(() => (this.msg = null), delay)
+    },
+    async swichToNextPlayer() {
+      await this.$store.dispatch({
         type: 'swichToNextPlayer',
       })
+      if (this.currPLayer.isInJail) {
+        this.showUpdate(
+          `${this.currPLayer.name}, you are in jail, try to get dubble or pay $100`
+        )
+      }
     },
     async throwDice() {
-      if (this.currDice) return
-      // const dice = [
-      //   utilService.getRandomInt(1, 7),
-      //   utilService.getRandomInt(1, 7),
-      // ]
-      var dice = [6, 6]
-      // this.currDice = dice
+      let isDubble = false
+      if (this.currDice) {
+        isDubble = this.currDice[0] === this.currDice[1]
+        if (!isDubble) return
+      }
+      const dice = [
+        utilService.getRandomInt(1, 7),
+        utilService.getRandomInt(1, 7),
+      ]
+      // var dice = [2, 2]
+
       await this.$store.dispatch({ type: 'throwDice', dice })
       if (this.isNextPayByDice?.isTrue) {
         this.payByDice()
         return
       }
+      const isThreeTimesDouble = this.checkDubbleCount()
+      if (isThreeTimesDouble) {
+        this.goToJail()
+        return
+      }
       this.doSteps()
+    },
+    checkDubbleCount() {
+      if (this.currDice[0] === this.currDice[1]) {
+        if (this.doubleCount >= 2) {
+          this.showUpdate('3 times double.. you are going to jail')
+          return true
+        }
+        this.showUpdate('Double ! play again.')
+        return false
+      }
     },
     async payByDice(times = 10) {
       let payTo = this.isNextPayByDice.payTo
-
       await this.$store.dispatch({ type: 'payByDice', times, payTo })
       this.isNextPayByDice = {}
     },
     async doSteps() {
-      console.log(this.currDice)
       let newPosition =
         this.currPLayer.position + this.currDice[0] + this.currDice[1]
       if (newPosition > 39) newPosition -= 40
@@ -169,7 +203,6 @@ export default {
         cardId,
       })
       this.currCard = {}
-      // this.swichToNextPlayer()
     },
     async buyRailroadCard(cardId) {
       await this.$store.dispatch({
@@ -177,7 +210,6 @@ export default {
         cardId,
       })
       this.currCard = {}
-      // this.swichToNextPlayer()
     },
     async buyUtilityCard(cardId) {
       await this.$store.dispatch({
@@ -185,11 +217,9 @@ export default {
         cardId,
       })
       this.currCard = {}
-      // this.swichToNextPlayer()
     },
     closePropertyModal() {
       this.currCard = {}
-      // this.swichToNextPlayer()
     },
     openCommunityModal() {
       const length = this.cards.communityChestCards.length
@@ -204,7 +234,6 @@ export default {
       this.currCard = this.cards.chanceCards[cardIdx]
     },
     async doCommunityTask() {
-      console.log('community view')
       const playerPosBefore = this.currPLayer.position
       await this.$store.dispatch({
         type: 'doCommunityTask',
@@ -212,7 +241,8 @@ export default {
       })
       this.currCard = {}
       const playerPosAfter = this.currPLayer.position
-      if (playerPosAfter !== playerPosBefore) this.checkCondition()
+      const isPlayerMoved = playerPosAfter !== playerPosBefore
+      if (isPlayerMoved) this.checkCondition()
     },
     async doChanceTask() {
       const playerPosBefore = this.currPLayer.position
@@ -222,7 +252,8 @@ export default {
       })
       this.currCard = {}
       const playerPosAfter = this.currPLayer.position
-      if (playerPosAfter !== playerPosBefore) this.checkCondition()
+      const isPlayerMoved = playerPosAfter !== playerPosBefore
+      if (isPlayerMoved) this.checkCondition()
     },
     openRailroadModal(name) {
       const cardIdx = this.cards.railroadsCards.findIndex((card) => {
@@ -275,8 +306,9 @@ export default {
     },
     checkCondition() {
       let currTile = this.board.tiles[this.currPLayer.position]
-      if (!currTile.owner || !Object.keys(currTile.owner).length) {
-        // FREE TILE..
+      const isTileFree = !currTile.owner || !Object.keys(currTile.owner).length
+      const isMyTail = currTile.owner?._id === this.currPLayer._id
+      if (isTileFree) {
         switch (currTile.type) {
           case 'go':
             console.log('go / swich')
@@ -291,6 +323,7 @@ export default {
             break
           case 'jail':
             console.log('jail / swich')
+            this.showUpdate('You are going to jail..')
             this.goToJail()
             break
           case 'visit':
@@ -316,19 +349,21 @@ export default {
             console.log('parking / swich')
             break
           default:
-          // some code
+            // some code
+            this.$alert('Condition not found')
         }
-      } else if (currTile.owner._id === this.currPLayer._id) {
-        console.log('this is your city')
+      } else if (isMyTail) {
+        this.showUpdate('Your city')
         const isCanBuyHome = this.hasAllCities()
         if (isCanBuyHome) this.openBuyHouseModal(currTile.name)
       } else {
         // TILE IS NOT FREE..
-        if (this.board.currPLayer.isNextPayByDice?.isTrue) {
+        const isNextPayByDice = this.board.currPLayer.isNextPayByDice?.isTrue
+        if (isNextPayByDice) {
           this.isNextPayByDice.isTrue = true //maybe save this on state ??
           this.isNextPayByDice.payTo = currTile.owner
           // this.$alert('Throw dice for pay !')
-          this.msg('Throw dice for pay !')
+          this.showUpdate('Throw dice for pay !')
         } else if (
           currTile.type === 'city' ||
           currTile.type === 'railroad' ||
@@ -344,15 +379,8 @@ export default {
         type: 'payRent',
         currTile,
       })
-      console.log(amount)
-      const msg =
-        this.currPLayer.name +
-        ' pay ' +
-        '$' +
-        amount +
-        ' rent to ' +
-        currTile.owner.name
-      this.showMsg(msg)
+      const msg = `${this.currPLayer.name} pay $${amount} rent, to ${currTile.owner.name}`
+      this.showUpdate(msg, 7000)
     },
     openBuyHouseModal(name) {
       const cardIdx = this.board.players[
@@ -384,14 +412,13 @@ export default {
       const cardsInCity =
         this.board.players[playerIdx].propertyCards.filter(
           (card) => card.color === currCard.color
-        ) || ''
+        ) || ' '
       return cardsInCity.length === currCard.quantity
     },
   },
   watch: {
     '$route.params.boardId'() {
       const boardId = this.$route.params.boardId
-      console.log(boardId)
       if (!boardId) return
       this.$store.dispatch({ type: 'getBoardById', boardId })
     },
@@ -414,6 +441,7 @@ export default {
     utilityCard,
     readingRailroadCard,
     modal,
+    updateMsgModal,
     playersListCmp,
   },
 }

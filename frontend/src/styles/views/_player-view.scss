@@ -1,13 +1,15 @@
 .player-view {
-  min-width: 15vw;
+  min-width: fit-content;
   position: fixed;
   display: flex;
   flex-direction: column;
+  bottom: 0;
   left: 0;
-  top: 50%;
-  transform: translate(0, -50%);
+  box-shadow: -1px 1px 24px 3px rgba(0, 0, 0, 0.75);
+
+  // transform: translate(0, -50%);
   min-height: 300px;
-  background-color: rgb(181, 139, 139);
+  background-color: #9bc1a1;
   border-radius: 5px;
   border-top-left-radius: unset;
   border-bottom-left-radius: unset;
@@ -18,15 +20,19 @@
 
   .view-header {
     position: sticky;
+    display: flex;
     left: 0;
     top: 0;
     z-index: 200;
     background-color: lightgray;
+    flex-direction: column;
+    align-items: center;
   }
 
   .go-back {
     align-self: end;
     cursor: pointer;
+    position: absolute;
   }
   .containerr {
     .player-name {
