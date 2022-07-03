@@ -19,13 +19,13 @@
 
         <div class="building-container" v-if="ownerCard">
           <div
-            class="house"
+            class="house-icon"
             v-if="(ownerCard.houses < 5) & (ownerCard.houses > 0)"
           >
             <font-awesome-icon class="house" icon="house" />
             <span class="house-num">{{ ownerCard.houses }}</span>
           </div>
-          <div class="hotel" v-if="ownerCard.houses > 4">
+          <div class="hotel-icon" v-if="ownerCard.houses > 4">
             <font-awesome-icon class="hotel" icon="hotel" />
           </div>
         </div>
@@ -82,12 +82,12 @@ export default {
 </script>
 
 <style>
-.house {
+/* .house-icon {
   font-size: 15px;
   color: #48a757;
 }
-.hotel {
+.hotel-icon {
   font-size: 15px;
   color: #7b1203;
-}
+} */
 </style>

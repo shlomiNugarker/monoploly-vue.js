@@ -51,6 +51,8 @@
             @doChanceTask="doChanceTask"
             @doCommunityTask="doCommunityTask"
             @buyHouse="buyHouse"
+            @tryDouble="tryDouble"
+            @payToJail="payToJail"
           />
         </div>
       </div>
@@ -120,15 +122,35 @@ export default {
   async created() {
     const boardId = this.$route.params.boardId
     await this.$store.dispatch({ type: 'getBoardById', boardId })
-    // await this.$store.dispatch({
-    //   type: 'doSteps',
-    //   newPosition: 0,
-    // })
+    await this.$store.dispatch({
+      type: 'doSteps',
+      newPosition: 10,
+    })
     const updateMsg = `${this.currPLayer.name} is playing now`
     this.showUpdate(updateMsg)
   },
 
   methods: {
+    tryDouble() {
+      console.log('try double')
+
+      this.closeModal()
+      // this.throwDice()
+    },
+    async payToJail() {
+      console.log('pay to jail')
+      await this.$store.dispatch({
+        type: 'payMoney',
+        playerIdx: this.playerIdx,
+        amount: 100,
+      })
+      await this.$store.dispatch({
+        type: 'getOutOfJail',
+        playerIdx: this.playerIdx,
+      })
+      this.showUpdate('you just get out from jail, throw dice !')
+      this.closeModal()
+    },
     showUpdate(update, delay = 7000) {
       this.updates.push(update)
       setTimeout(() => this.updates.shift(), delay)
@@ -145,19 +167,23 @@ export default {
         this.showUpdate(
           `${this.currPLayer.name}, you are in jail, try to get dubble or pay $100`
         )
+        this.currCard.type = 'jail'
       }
     },
     async throwDice() {
       let isDubble = false
       if (this.currDice) {
         isDubble = this.currDice[0] === this.currDice[1]
-        if (!isDubble) return
+        if (!isDubble) {
+          if (this.currPLayer.isInJail) this.showUpdate('Maybe next time')
+          return
+        }
       }
       const dice = [
         utilService.getRandomInt(1, 7),
         utilService.getRandomInt(1, 7),
       ]
-      // var dice = [2, 2]
+      // var dice = [1, 1]
 
       await this.$store.dispatch({ type: 'throwDice', dice })
       if (this.isNextPayByDice?.isTrue) {
@@ -299,6 +325,7 @@ export default {
       })
     },
     async goToJail() {
+      console.log(this.playerIdx)
       await this.$store.dispatch({
         type: 'goToJail',
         playerIdx: this.playerIdx,
@@ -353,9 +380,17 @@ export default {
             this.$alert('Condition not found')
         }
       } else if (isMyTail) {
-        this.showUpdate('Your city')
-        const isCanBuyHome = this.hasAllCities()
-        if (isCanBuyHome) this.openBuyHouseModal(currTile.name)
+        if (currTile.type === 'city') {
+          // this.showUpdate('Your city')
+          const hasAllCities = this.hasAllCities()
+          const isCanBuyMore = this.isAllowedToBuyHouse()
+          if (!hasAllCities) {
+            // this.showUpdate('')
+
+            if (!isCanBuyMore) this.showUpdate('')
+          }
+          if (hasAllCities & isCanBuyMore) this.openBuyHouseModal(currTile.name)
+        }
       } else {
         // TILE IS NOT FREE..
         const isNextPayByDice = this.board.currPLayer.isNextPayByDice?.isTrue
@@ -414,6 +449,30 @@ export default {
           (card) => card.color === currCard.color
         ) || ' '
       return cardsInCity.length === currCard.quantity
+    },
+    isAllowedToBuyHouse() {
+      let currTile = this.board.tiles[this.currPLayer.position]
+      const playerId = this.board.currPLayer._id
+      const playerIdx = this.board.players.findIndex(
+        (player) => player._id === playerId
+      )
+      const currCard =
+        this.board.players[playerIdx].propertyCards.find(
+          (card) => card.title.toLowerCase() === currTile.name.toLowerCase()
+        ) || ''
+      const cardsInCity =
+        this.board.players[playerIdx].propertyCards.filter(
+          (card) => card.color === currCard.color
+        ) || ' '
+
+      const otherCardsInCity = cardsInCity.filter(
+        (card) => card._id !== currCard._id
+      )
+
+      const isAllowed = otherCardsInCity.every((card) => {
+        return card.houses >= currCard.houses
+      })
+      return isAllowed
     },
   },
   watch: {

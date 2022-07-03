@@ -42,6 +42,12 @@
       @closeModal="closeModal"
     />
 
+    <jailOutModal
+      v-if="card.type === 'jail'"
+      @tryDouble="tryDouble"
+      @payToJail="payToJail"
+    />
+
     <msgModal v-if="msg" :msg="msg" @closeModal="closeModal" />
   </section>
 </template>
@@ -53,6 +59,7 @@ import railroadCardModal from './railroad-card-modal.vue'
 import chanceModal from './chance-modal.vue'
 import utilityCardModal from './utility-card-modal.vue'
 import buyHouseModal from './buy-house-modal.vue'
+import jailOutModal from './jail-out-modal.vue'
 
 import msgModal from './msg-modal.vue'
 
@@ -99,6 +106,12 @@ export default {
     doCommunityTask() {
       this.$emit('doCommunityTask')
     },
+    tryDouble() {
+      this.$emit('tryDouble')
+    },
+    payToJail() {
+      this.$emit('payToJail')
+    },
   },
   components: {
     propertyCardModal,
@@ -108,6 +121,7 @@ export default {
     railroadCardModal,
     chanceModal,
     buyHouseModal,
+    jailOutModal,
   },
 }
 </script>

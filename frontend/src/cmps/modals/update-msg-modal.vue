@@ -39,7 +39,7 @@ export default {
 .all-updates {
   display: flex;
   position: absolute;
-  top: 0;
+  top: 5px;
   justify-content: center;
 
   flex-direction: column;
@@ -55,7 +55,8 @@ export default {
   top: 20px;
   /* position: absolute; */
   width: 500px;
-  background-color: rgb(25, 231, 77);
+  background-color: #cde7ce;
   margin: 0 0 3px 0px;
+  box-shadow: -1px 1px 24px 3px rgb(0 0 0 / 75%);
 }
 </style>

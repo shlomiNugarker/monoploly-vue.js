@@ -81,7 +81,7 @@ export default {
           await boardService.save(copyBoard)
           commit({ type: 'setBoard', board: copyBoard })
           if (isDouble) {
-            await dispatch({ type: 'getOutOfJail' })
+            await dispatch({ type: 'getOutOfJail', playerIdx })
             await dispatch({ type: 'doSteps', newPosition })
           }
           return
@@ -115,16 +115,16 @@ export default {
         console.log('cannot do steps..', err)
       }
     },
-    async getOutOfJail({ state, commit, dispatch, getters }) {
-      console.log('get out of jail')
-      await dispatch({ type: 'doSteps', newPosition: 10 })
-      let copyBoard = JSON.parse(JSON.stringify(state.board))
-      let playerIdx = getters.playerIdx
-      copyBoard.doubleCount = 0
-      copyBoard.players[playerIdx].isInJail = 0
-      await boardService.save(copyBoard)
-      commit({ type: 'setBoard', board: copyBoard })
-    },
+    // async getOutOfJail({ state, commit, dispatch, getters }) {
+    //   console.log('get out of jail')
+    //   await dispatch({ type: 'doSteps', newPosition: 10 })
+    //   let copyBoard = JSON.parse(JSON.stringify(state.board))
+    //   let playerIdx = getters.playerIdx
+    //   copyBoard.doubleCount = 0
+    //   copyBoard.players[playerIdx].isInJail = 0
+    //   await boardService.save(copyBoard)
+    //   commit({ type: 'setBoard', board: copyBoard })
+    // },
     async swichToNextPlayer({ state, commit, getters }) {
       try {
         let copyBoard = JSON.parse(JSON.stringify(state.board))
@@ -393,7 +393,7 @@ export default {
         let copyBoard = JSON.parse(JSON.stringify(state.board))
         copyBoard.currDice = null
         copyBoard.doubleCount = 0
-        copyBoard.isDubble = 0
+        // copyBoard.isDubble = 0
         copyBoard.players[playerIdx].isInJail = 3
         await boardService.save(copyBoard)
         commit({ type: 'setBoard', board: copyBoard })
@@ -515,10 +515,12 @@ export default {
         (card) => cardId === card._id
       )
       const cardPlayer = copyBoard.players[playerIdx].propertyCards[cardIdx]
-      if (cardPlayer.houses === 5) {
+      const hasHotel = cardPlayer.houses === 5
+      const hasHouses = cardPlayer.houses > 4
+      if (hasHotel) {
         console.log('you allready have hotel ')
         return
-      } else if (cardPlayer.houses > 4) {
+      } else if (hasHouses) {
         copyBoard.players[playerIdx].balance -= cardPlayer.hotelCost
       } else {
         copyBoard.players[playerIdx].balance -= cardPlayer.houseCost
@@ -603,6 +605,20 @@ export default {
       await boardService.save(copyBoard)
       commit({ type: 'setBoard', board: copyBoard })
       return amountToPay
+    },
+    async getOutOfJail({ state, commit, dispatch }, { playerIdx }) {
+      console.log('get out jail', playerIdx)
+      try {
+        let copyBoard = JSON.parse(JSON.stringify(state.board))
+        // copyBoard.currDice = null
+        copyBoard.doubleCount = 0
+
+        copyBoard.players[playerIdx].isInJail = 0
+        await boardService.save(copyBoard)
+        commit({ type: 'setBoard', board: copyBoard })
+      } catch (err) {
+        console.log('cannot getOutOfJail', err)
+      }
     },
   },
 }

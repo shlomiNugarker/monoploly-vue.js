@@ -3,10 +3,11 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgb(255, 255, 255);
+  background-color: rgba(255, 255, 255, 0.853);
   width: 400px;
   min-height: 400px;
   border-radius: 10px;
+  padding: 10px;
 
   .modal-container {
     .title {
