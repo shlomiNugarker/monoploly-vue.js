@@ -11,6 +11,7 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  base: '/Monoploly-Vue.js/',
   // build: '../backend/public',
   build: {
     chunkSizeWarningLimit: 3600,
