@@ -11,6 +11,9 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
-  build: '../backend/public',
+  // build: '../backend/public',
+  build: {
+    chunkSizeWarningLimit: 3600,
+  },
   emptyOutDir: true,
 })
