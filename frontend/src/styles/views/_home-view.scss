@@ -1,18 +1,38 @@
 .home-view {
   height: 100vh;
   width: 100vw;
+  background: url('https://images-na.ssl-images-amazon.com/images/S/pv-target-images/aa22f7bd40726af6afd9c54799b3cbe996ade4542b502f08f8d64e832f2e18b1._RI_.jpg');
+
+  button {
+    border: none;
+    margin: 5px;
+    padding: 7px;
+  }
+
+  input {
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+  }
 
   .header {
-    height: 10%;
-    background-color: rgb(149, 215, 197);
+    height: 10vh;
   }
   .container {
-    background-color: rgb(177, 215, 149);
+    display: flex;
+    height: 80vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
   .players-to-add {
     display: flex;
   }
   .player-to-add {
     display: flex;
+  }
+
+  .footer {
+    height: 10vh;
   }
 }

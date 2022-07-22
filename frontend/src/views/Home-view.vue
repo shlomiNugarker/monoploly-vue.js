@@ -23,10 +23,11 @@
         </div>
       </div>
 
-      <input type="text" v-model="name" />
+      <input type="text" placeholder="Add.." v-model="name" />
       <button @click="addPlayer">Add player +</button><br />
       <button @click="startGame">Play !</button>
     </div>
+    <div class="footer"></div>
   </section>
 </template>
 
@@ -61,6 +62,7 @@ export default {
       this.name = ' '
     },
     startGame() {
+      if (!this.playersToAdd || !this.playersToAdd.length) return
       this.getNewBoard()
     },
     async getNewBoard() {

@@ -28,7 +28,7 @@
         </div>
 
         <div class="logo">
-          <img src="../styles/icon/Monopoly-Logo.svg" alt="" />
+          <!-- <img src="../styles/icon/Monopoly-Logo.svg" alt="" /> -->
         </div>
 
         <diceCmp :currDice="currDice" @throwDice="throwDice" />
@@ -122,10 +122,10 @@ export default {
   async created() {
     const boardId = this.$route.params.boardId
     await this.$store.dispatch({ type: 'getBoardById', boardId })
-    await this.$store.dispatch({
-      type: 'doSteps',
-      newPosition: 10,
-    })
+    // await this.$store.dispatch({
+    //   type: 'doSteps',
+    //   newPosition: 10,
+    // })
     const updateMsg = `${this.currPLayer.name} is playing now`
     this.showUpdate(updateMsg)
   },

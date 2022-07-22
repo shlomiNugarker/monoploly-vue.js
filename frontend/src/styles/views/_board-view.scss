@@ -343,6 +343,10 @@
       outline: 1px solid;
       z-index: 2;
       border-radius: 1px;
+
+      p {
+        cursor: pointer;
+      }
     }
     .chance {
       border: 1px dashed;
