@@ -4,11 +4,15 @@ import { utilService } from '../../services/util.service'
 export default {
   state: {
     board: null,
+    boards: null,
     currDice: [],
   },
   getters: {
     board(state) {
       return state.board
+    },
+    boards(state) {
+      return state.boards
     },
     doubleCount(state) {
       return state.board.doubleCount
@@ -23,7 +27,7 @@ export default {
       return state.cmpsOrder
     },
     currPLayer(state) {
-      return state.board.currPLayer
+      return state.board?.currPLayer
     },
     playerIdx(state) {
       const playerId = state.board.currPLayer._id
@@ -33,6 +37,9 @@ export default {
   mutations: {
     setBoard(state, { board }) {
       state.board = board
+    },
+    setBoards(state, { boards }) {
+      state.boards = boards
     },
     async doSteps(state, { newPosition }) {},
     doubleCount(state) {
@@ -45,6 +52,11 @@ export default {
       const addedBoard = await boardService.save(board)
       commit({ type: 'setBoard', board: addedBoard })
       return addedBoard
+    },
+    async getBoards({ commit }) {
+      const boards = await boardService.query()
+      commit({ type: 'setBoards', boards })
+      return boards
     },
     async throwDice({ state, commit, dispatch, getters }, { dice }) {
       let copyBoard = JSON.parse(JSON.stringify(state.board))

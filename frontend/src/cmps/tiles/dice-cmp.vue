@@ -4,7 +4,9 @@
       <font-awesome-icon class="dice" :icon="'dice-' + firstDiceStr" />
       <font-awesome-icon class="dice" :icon="'dice-' + secondDiceStr" />
     </div>
-    <p v-else class="dice-container">Throw dice</p>
+    <p v-else class="dice-container">
+      <button class="n-dice">Throw dice</button>
+    </p>
   </section>
 </template>
 
@@ -76,4 +78,10 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.n-dice {
+  border: 1px solid;
+  border-radius: 10px;
+  font-size: 20px;
+}
+</style>

@@ -12,7 +12,9 @@
         />
         <div class="center">
           <div>Turn: {{ currPLayer.name }}</div>
-          <p @click="swichToNextPlayer">Pass the dice</p>
+          <!-- <button class="pass-dice" @click="swichToNextPlayer">
+            Pass the dice
+          </button> -->
         </div>
 
         <div class="chance">
@@ -30,6 +32,9 @@
         <div class="logo">
           <!-- <img src="../styles/icon/Monopoly-Logo.svg" alt="" /> -->
         </div>
+        <button class="pass-dice" @click="swichToNextPlayer">
+          Pass the dice
+        </button>
 
         <diceCmp :currDice="currDice" @throwDice="throwDice" />
       </div>
@@ -121,12 +126,13 @@ export default {
   },
   async created() {
     const boardId = this.$route.params.boardId
+    console.log(boardId)
     await this.$store.dispatch({ type: 'getBoardById', boardId })
     // await this.$store.dispatch({
     //   type: 'doSteps',
     //   newPosition: 10,
     // })
-    const updateMsg = `${this.currPLayer.name} is playing now`
+    const updateMsg = `${this.currPLayer?.name} is playing now`
     this.showUpdate(updateMsg)
   },
 
@@ -515,5 +521,14 @@ export default {
   /* cursor: pointer; */
   z-index: 15;
   /* pointer-events: none; */
+}
+
+.pass-dice {
+  grid-column: 8/10;
+  grid-row: 4/4;
+  z-index: 6;
+  border-radius: 5px;
+  border: 1px solid black;
+  cursor: pointer;
 }
 </style>
